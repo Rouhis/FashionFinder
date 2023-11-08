@@ -1,38 +1,105 @@
-.App {
+
+.App{
+  background-color: #0C0F19;
+  flex-direction: column;
+  color: white;
+  min-height: 100vh;
+}
+.title{
+  padding-top: 30px;
+  margin: 0px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Boxes {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-direction: row;
+  justify-content: space-evenly;
   color: white;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.InfoBox {
+  width: 457px;
+  height: 581px;
+  background-color: #1F2937;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ConfirmButton{
+  width: 100%;
+  height: 47px;
+  background-color: #404757;
+}
+
+.PreviewBox{
+  width: 487px;
+  height: 251px;
+  background-color: #1F2937;
+}
+
+.InfoText {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+  padding-left: 26px;
+  padding-right: 21px;
+  padding-bottom: 43px;
+  padding-top: 30px;
+  width: 410px;
+  height: 477px;
+  margin: 0px;
+}
+
+.HeaderBox {
+  width: 100%;
+  height: 31px;
+  background-color: #111827;
+}
+
+.BoxTitle {
+  margin: 0;
+  width: 269px;
+  height: 20px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  flex-shrink: 0;
+  padding-left: 10px;
+  padding-right: 0;
+  padding-bottom: 4px;
+  padding-top: 7px;
+}
+
+.ConfirmButtonBox{
+  padding-right: 7;
+  padding-bottom: 4px;
+  padding-top: 7px;
+}
+.LoadImageBox{
+  width: 487px;
+  height: 263px;
+  background-color: #1F2937;
+}
+
+.LoadImageBox img{
+  width: 100%;
+  height: 235px;
+}
+
+.PreviewBox img{
+  width: 100%;
+  height: 235px;
+}
+.Card img{
+  width: 152px;
+  height: 205px;
+  border-radius: 15px;
+}
+.CardInfo{
+  flex-direction: column;
+  justify-content: space-evenly;
 }
