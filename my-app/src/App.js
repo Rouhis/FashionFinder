@@ -34,8 +34,8 @@ const App = () => {
             'Content-Type': 'multipart/form-data', // Important header for files
           },
         });
-        setAnswer(response.data.answer);
-      } catch (error) {
+        setAnswer(response.data.newAnswer);
+       } catch (error) {
         console.error('Error fetching response from Bard:', error);
       }
   
