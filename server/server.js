@@ -12,7 +12,7 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 
-const bardCookie = 'dAh410sfF6FOEQt1996bwm-ARpOtO6BZi2Br1Lg394n-mmwWlcpbgFwKPmZTWoJMtac3ug.'; // Replace with your actual Bard AI cookie securely
+const bardCookie = 'dAgtJaNmtSXEwyDoPxMhO1M3E1jlJjK7uKpcEqSgsliTCLhEGOsbP6Mj7IhHaNFqP3nuhQ.'; // Replace with your actual Bard AI cookie securely
 
 app.post('/ask-bard', upload.single('image'), async (req, res) => {
     const { question } = req.body;
@@ -23,8 +23,8 @@ app.post('/ask-bard', upload.single('image'), async (req, res) => {
          const Bard = (await import('bard-ai')).default;
          const myBard = new Bard(bardCookie);
          const answer = await myBard.ask(question, {image: image.buffer});
-         const new1Answe = answer.split('```json').join("")
-         const newAnswer = new1Answer.split('```').join("")
+         const new1Answer = answer.split('```json {').join("")
+         const newAnswer = new1Answer.split('} ```').join("")
         console.log(answer);
         res.json({ newAnswer });
     } catch (error) {
