@@ -14,9 +14,10 @@ import axios from 'axios';
 
 const App = () => {
     const [answer, setAnswer] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null); // New state for the image
-  
+
     const handleImageChange = (e) => {
       setSelectedImage(e.target.files[0]);
     };
@@ -26,7 +27,7 @@ const App = () => {
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
-      formData.append('question', 'Find me products similiar to this from zalando and return the answer in JSON format.'); // Append other data you want to send
+      formData.append('question', "Find me products similiar to this from zalando and return the answer in ```json{products: [{id: ,name: ,brand: ,price: ,imageUrl:,{id: ,name:,brand: ,price: , imageUrl:,{id: ,name: ,brand: ,price: ,imageUrl: ]}```"); // Append other data you want to send
   
       try {
         const response = await axios.post('http://localhost:3001/ask-bard', formData, {
@@ -35,12 +36,14 @@ const App = () => {
           },
         });
         setAnswer(response.data.newAnswer);
+        setImageUrl(response.data.imageUrl);
        } catch (error) {
         console.error('Error fetching response from Bard:', error);
       }
   
       setIsLoading(false);
     };
+
 
   return (
     <div className="App"> 
@@ -73,7 +76,7 @@ const App = () => {
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
               <p className="InfoText">
-                {answer}
+                {imageUrl}
               </p>
             </Box>
         </div>
