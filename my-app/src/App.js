@@ -3,7 +3,6 @@ import './App.css';
 import React, {useState} from 'react';
 import Button from '@mui/joy/Button';
 import { Box } from '@mui/system';
-import LoadPic from './load_pic.png'
 import PreviewPic from './preview_pic.png'
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
@@ -13,8 +12,9 @@ import axios from 'axios';
 
 
 const App = () => {
-    const [answer, setAnswer] = useState('');
+    const [cleanedAnswer, setcleanedAnswer] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [name, setImagename] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null); // New state for the image
 
@@ -27,7 +27,7 @@ const App = () => {
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
-      formData.append('question', "Find me products similiar to this from zalando and return the answer in ```json{products: [{id: ,name: ,brand: ,price: ,imageUrl:,{id: ,name:,brand: ,price: , imageUrl:,{id: ,name: ,brand: ,price: ,imageUrl: ]}```"); // Append other data you want to send
+      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: ,name: ,brand: ,price: ,imageUrl:,{id: ,name:,brand: ,price: , imageUrl:,{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]}```"); // Append other data you want to send
   
       try {
         const response = await axios.post('http://localhost:3001/ask-bard', formData, {
@@ -35,8 +35,9 @@ const App = () => {
             'Content-Type': 'multipart/form-data', // Important header for files
           },
         });
-        setAnswer(response.data.newAnswer);
+        setcleanedAnswer(response.data.cleanedAnswer);
         setImageUrl(response.data.imageUrl);
+        setImagename(response.data.name)
        } catch (error) {
         console.error('Error fetching response from Bard:', error);
       }
@@ -76,7 +77,7 @@ const App = () => {
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
               <p className="InfoText">
-                {imageUrl}
+                {cleanedAnswer}
               </p>
             </Box>
         </div>
@@ -87,11 +88,11 @@ const App = () => {
         </div>
         <div className="Card">
             <Card orientation="horizontal" className="CardInfo" variant="solid">
-              <img src={testjacket} alt="Logo"></img>
+              <img src={testjacket ? "" : imageUrl} alt="Logo"></img>
               <div>
                   <CardContent>
                     <Typography level="title-md" textColor="inherit">
-                        Solid card
+                        Name: {name}
                     </Typography>
                     <Typography textColor="inherit">Description of the card.</Typography>
                   </CardContent>

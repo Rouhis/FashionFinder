@@ -12,7 +12,7 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 
-const bardCookie = 'dAgtJcyNzLShOncG4764BTL-a3oKE955sXC6MLc7jcc1lF6tzU1CX4cPlvyZn-ACS2JDKA.'; // Replace with your actual Bard AI cookie securely
+const bardCookie = 'dAgtJboXFpoA_dk4LPqUfXFHBAt6e8l6IIgivjOcxNV9J7ueIr6Oz9DoG5HltMRg4hkL8A.'; // Replace with your actual Bard AI cookie securely
 
 app.post('/ask-bard', upload.single('image'), async (req, res) => {
     const { question } = req.body;
@@ -23,12 +23,14 @@ app.post('/ask-bard', upload.single('image'), async (req, res) => {
          const Bard = (await import('bard-ai')).default;
          const myBard = new Bard(bardCookie);
          const answer = await myBard.ask(question, {image: image.buffer});
+         console.log("answer"  + answer)
          const new1Answer = answer.split('```json').join("")
          const cleanedAnswer = new1Answer.split('```').join("")
-         console.log(cleanedAnswer)
+         console.log("cleaned"  + cleanedAnswer)
          const parsedAnswer = JSON.parse(cleanedAnswer)
          const imageUrl = parsedAnswer.products[0].imageUrl;
-        res.json({ cleanedAnswer,imageUrl });
+         const name = parsedAnswer.products[0].name;
+        res.json({ cleanedAnswer,imageUrl,name });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message });
