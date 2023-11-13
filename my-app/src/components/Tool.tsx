@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AppContext from "./hooks/createContext";
 import { ToolProps } from "./helpers/Interfaces";
 import * as _ from "underscore";
+import { test } from "../App"
 
 const Tool = ({ handleMouseMove }: ToolProps) => {
   const {
@@ -56,6 +57,7 @@ const Tool = ({ handleMouseMove }: ToolProps) => {
           className={`${
             shouldFitToWidth ? "w-full" : "h-full"
           } ${imageClasses}`}
+          onClick={() => test(maskImg)}
         ></img>
       )}
       {maskImg && (

@@ -53,6 +53,10 @@ const styles = {
     borderRadius: '5px',
     padding: '20px',
     marginTop: '20px',
+  },
+  imagecontainer: {
+    width: '1024px',
+    height: '768px'
   }
 };
 
@@ -61,6 +65,12 @@ const styles = {
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
 const IMAGE_EMBEDDING = "/assets/data/naulakko.npy"
 const MODEL_DIR = "/model/sam_onnx_quantized_example.onnx"
+let imageofmask = ""
+
+export const test = async (testing) => {
+  console.log(testing)
+  imageofmask = testing.src
+}
 
 const App = () => {
   const [answer, setAnswer] = useState("")
@@ -213,7 +223,14 @@ const App = () => {
         {isLoading ? "Loading..." : "Ask Bard"}
       </button>
       <div style={styles.answer}>Answer from Bard: {answer}</div>
-      <Stage />
+      <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+        <Stage />
+        <div style={{...styles.container, width: "640px", height: "480px"}}>
+          <img
+            src={imageofmask}
+          ></img>
+        </div>
+      </div>
     </div>
   )
 }

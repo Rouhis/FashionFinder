@@ -12,7 +12,7 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 
-const bardCookie = ''; // Replace with your actual Bard AI cookie securely
+const bardCookie = 'dAhP3bLe-elPeIAqsMphxYdrB1HQLjJnpYHkB1ZI115GRuM_Dgm5Qmht4XDvl2AXUUv1gw.'; // Replace with your actual Bard AI cookie securely
 
 app.post('/ask-bard', upload.single('image'), async (req, res) => {
     const { question } = req.body;
