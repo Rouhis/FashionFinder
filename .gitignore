@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+my-app/src/assets/sam_onnx_quantized_example.onnx
+sam-test/sam_onnx_quantized_example.onnx
+sam-test/sam_vit_h_4b8939.pth

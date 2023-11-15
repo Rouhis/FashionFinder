@@ -12,6 +12,7 @@ import { test } from "../App"
 
 const Tool = ({ handleMouseMove }: ToolProps) => {
   const {
+    clicks: [clicks],
     image: [image],
     maskImg: [maskImg, setMaskImg],
   } = useContext(AppContext)!;
@@ -57,7 +58,7 @@ const Tool = ({ handleMouseMove }: ToolProps) => {
           className={`${
             shouldFitToWidth ? "w-full" : "h-full"
           } ${imageClasses}`}
-          onClick={() => test(maskImg)}
+          onClick={() => test(maskImg, clicks)}
         ></img>
       )}
       {maskImg && (

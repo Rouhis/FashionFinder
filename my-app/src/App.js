@@ -64,11 +64,11 @@ const styles = {
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
 const IMAGE_EMBEDDING = "/assets/data/naulakko.npy"
-const MODEL_DIR = "/model/sam_onnx_quantized_example.onnx"
+const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
 let imageofmask = ""
 
-export const test = async (testing) => {
-  console.log(testing)
+export const test = async (testing, click) => {
+  console.log("clicks:", click[0])
   imageofmask = testing.src
 }
 
