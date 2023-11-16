@@ -1,18 +1,16 @@
-
 import './App.css';
 import React, {useState} from 'react';
 import Button from '@mui/joy/Button';
 import { Box } from '@mui/system';
 import PreviewPic from './preview_pic.png'
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import Typography from '@mui/joy/Typography';
-import testjacket from './jacket.png';
 import axios from 'axios';
+import ListForProducts from './List';
+import {useContext, useEffect} from 'react';
 
 
 const App = () => {
-    const [cleanedAnswer, setcleanedAnswer] = useState('');
+
+    const [cleanedAnswer, setcleanedAnswer] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
     const [name, setImagename] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -21,13 +19,20 @@ const App = () => {
     const handleImageChange = (e) => {
       setSelectedImage(e.target.files[0]);
     };
+
+
+    useEffect(() => {
+      console.log('Cleaned Answer :', cleanedAnswer);
+      console.log("setted image state: ", selectedImage)
+    }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
+  
   
     const handleAskBard = async () => {
       setIsLoading(true);
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
-      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: ,name: ,brand: ,price: ,imageUrl:,{id: ,name:,brand: ,price: , imageUrl:,{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]},{id: ,name: ,brand: ,price: ,imageUrl:,]}```"); // Append other data you want to send
+      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, urlpage: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
   
       try {
         const response = await axios.post('http://localhost:3001/ask-bard', formData, {
@@ -35,7 +40,7 @@ const App = () => {
             'Content-Type': 'multipart/form-data', // Important header for files
           },
         });
-        setcleanedAnswer(response.data.cleanedAnswer);
+        setcleanedAnswer(response.data.parsedAnswer);
         setImageUrl(response.data.imageUrl);
         setImagename(response.data.name)
        } catch (error) {
@@ -45,10 +50,14 @@ const App = () => {
       setIsLoading(false);
     };
 
+///////////////////////// Ladattu kuva näkyviin////////////////////////////
+//    <img src={ URL.createObjectURL(selectedImage)} alt="Logo"></img>
+
+
 
   return (
     <div className="App"> 
-      <h1 className="title">AI Product Finder</h1>
+      <h1 className="title">Fashion Finder</h1>
       <div className="Boxes">
         <div className="Left">
           <Box className="LoadImageBox">
@@ -77,7 +86,7 @@ const App = () => {
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
               <p className="InfoText">
-                {cleanedAnswer}
+                
               </p>
             </Box>
         </div>
@@ -86,19 +95,7 @@ const App = () => {
         <div className="HeaderBox">
           <h5 className="BoxTitle">Similar Products Images</h5>
         </div>
-        <div className="Card">
-            <Card orientation="horizontal" className="CardInfo" variant="solid">
-              <img src={testjacket ? "" : imageUrl} alt="Logo"></img>
-              <div>
-                  <CardContent>
-                    <Typography level="title-md" textColor="inherit">
-                        Name: {name}
-                    </Typography>
-                    <Typography textColor="inherit">Description of the card.</Typography>
-                  </CardContent>
-                  </div>
-            </Card>
-        </div>
+      <ListForProducts mediaArray={cleanedAnswer}/>
       </Box>
     </div>
       </div>
