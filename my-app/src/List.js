@@ -1,7 +1,5 @@
 import List from "@mui/joy/List";
 import ListItem from "./ListItem";
-//import {cleanedAnswer} from './App';
-import App from "./App";
 import PropTypes from "prop-types";
 
 const ListForProducts = ({ mediaArray }) => {

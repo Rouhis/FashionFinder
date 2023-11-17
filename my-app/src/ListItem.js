@@ -1,13 +1,12 @@
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
-import testjacket from "./jacket.png";
 
-function ListItem({ mediaArray: mediaArray }) {
+function ListItem({ mediaArray }) {
   //If mediaArray is empty listitem will return null
 
   if (!mediaArray || !mediaArray.products) {
-        console.log("Tyhjääääääääääääääääääää", mediaArray);
+        console.log("MediaArray is empty", mediaArray);
     return null;
   }
 
