@@ -74,7 +74,7 @@ module.exports = {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: "./src/assets/index.html",
+      template: "./public/index.html",
     }),
     new FriendlyErrorsWebpackPlugin(),
     new webpack.ProvidePlugin({

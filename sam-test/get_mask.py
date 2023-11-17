@@ -48,16 +48,7 @@ def get_mask(x = 2739.5833333333335, y = 1875):
     # All the False values in the mask are converted to white pixels, so only the masked part of the image remains with a white background.
     image[generated_mask==False] = [255,255,255]
 
-# Check if the parameters were given properly, if so use the given parameters for the get_mask function.
-# If the parameters weren't passed properly, call the get_mask function with default values.
-# Default values will get a hoodie as a mask.
-if xarg and yarg != "":
-    get_mask(xarg, yarg)
-else:
-    get_mask()
-
-# Convert the mask from a numpy.ndarray to image using PIL's Image module.
-def save_new_mask():
+    # Convert the mask from a numpy.ndarray to image using PIL's Image module.
     print(type(image))
     img_from_array = im.fromarray(image)
 
@@ -79,5 +70,10 @@ def save_new_mask():
     new_mask = img.resize((640, 480))
     new_mask.save(saved_mask_path, "PNG")
 
-
-save_new_mask()
+# Check if the parameters were given properly, if so use the given parameters for the get_mask function.
+# If the parameters weren't passed properly, call the get_mask function with default values.
+# Default values will get a hoodie as a mask.
+if xarg and yarg != "":
+    get_mask(xarg, yarg)
+else:
+    get_mask()
