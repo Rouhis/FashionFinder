@@ -30,7 +30,7 @@ function ListItem({ mediaArray: mediaArray }) {
               Price: {productArray[i].price} €
             </Typography>
             <Typography level="title-md" textColor="inherit">
-              <a href={productArray[i].urlpage}>Link</a> 
+              <a href={productArray[i].link}>Link</a> 
             </Typography>
           </CardContent>
         </Card>
