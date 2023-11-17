@@ -40,7 +40,7 @@ const Stage = () => {
   return (
     <div 
       className={flexCenterClasses}
-      style={{width: "640px", height: "480px"}}
+      style={{width: "487px", height: "200px"}}
       >
       <div className={`${flexCenterClasses} relative w-[90%] h-[90%]`}>
         <Tool handleMouseMove={handleMouseMove} />

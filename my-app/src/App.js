@@ -3,11 +3,13 @@
 
 // This source code is licensed under the license found in the
 // LICENSE file in the root directory of this source tree.
-
+import './App.css';
+import Button from '@mui/joy/Button';
+import { Box } from '@mui/system';
+import ListForProducts from './List';
 import { InferenceSession } from "onnxruntime-web"
 import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
-import "./assets/scss/App.scss"
 import { handleImageScale } from "./components/helpers/scaleHelper"
 import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
@@ -16,50 +18,6 @@ import AppContext from "./components/hooks/createContext"
 const ort = require("onnxruntime-web")
 /* @ts-ignore */
 import npyjs from "npyjs"
-
-const styles = {
-  container: {
-    backgroundColor: 'black', // Main background color
-    color: '#8fce00',          // Main text color
-    fontFamily: 'Arial, sans-serif', // Font family
-    minHeight: '100vh',       // Full height view
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: '#8fce00', // Button background color
-    color: 'black',            // Button text color
-    border: 'none',
-    padding: '10px 20px',
-    fontSize: '1em',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    margin: '10px',
-    borderRadius: '5px',
-    // Disable button style
-    ':disabled': {
-      backgroundColor: 'grey',
-      cursor: 'not-allowed',
-    },
-  },
-  answer: {
-    backgroundColor: '#c9f26c',
-    color: 'black',
-    fontSize: '1em',
-    fontWeight: 'bold',
-    border: '1px solid #8fce00',    // Green border
-    borderRadius: '5px',
-    padding: '20px',
-    marginTop: '20px',
-  },
-  imagecontainer: {
-    width: '1024px',
-    height: '768px'
-  }
-};
-
 
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
@@ -73,40 +31,40 @@ export const test = async (testing, click) => {
 }
 
 const App = () => {
-  const [answer, setAnswer] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [selectedImage, setSelectedImage] = useState("") // New state for the image
 
-  const handleImageChange = e => {
-    setSelectedImage(e.target.files[0])
-  }
+    const [cleanedAnswer, setcleanedAnswer] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null); // New state for the image
+
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
+  //Test logs to see that states have updated correctly
+  useEffect(() => {
+    console.log('Cleaned Answer :', cleanedAnswer);
+    console.log("setted image state: ", selectedImage)
+  }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
 
-    const formData = new FormData()
-    formData.append("image", selectedImage) // Append the image to the FormData object
-    formData.append(
-      "question",
-      "Find me products similiar to this from zalando and return the answer in JSON format."
-    ) // Append other data you want to send
+    const formData = new FormData();
+    formData.append('image', selectedImage); // Append the image to the FormData object
+    formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/ask-bard",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data" // Important header for files
-          }
-        }
-      )
-      setAnswer(response.data.answer)
-    } catch (error) {
-      console.error("Error fetching response from Bard:", error)
+      const response = await axios.post('http://localhost:3001/ask-bard', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important header for files
+        },
+      });
+      setcleanedAnswer(response.data.parsedAnswer);
+     } catch (error) {
+      console.error('Error fetching response from Bard:', error);
     }
 
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   const {
@@ -211,28 +169,55 @@ const App = () => {
   }
 
   return (
-    <div style={styles.container}>
-      <input type="file" onChange={handleImageChange} disabled={isLoading} />
-      <button
-        onClick={handleAskBard}
-        // Disable button if loading or no image is selected
-        //style={isLoading}
-        disabled={isLoading || !selectedImage}
-        style={isLoading ? { ...styles.button, ...styles.button[':disabled'] } : styles.button}
-      >
-        {isLoading ? "Loading..." : "Ask Bard"}
-      </button>
-      <div style={styles.answer}>Answer from Bard: {answer}</div>
-      <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
-        <Stage />
-        <div style={{...styles.container, width: "640px", height: "480px"}}>
-          <img
-            src={imageofmask}
-          ></img>
+    <div className="App"> 
+      <h1 className="title">Fashion Finder</h1>
+      <div className="Boxes">
+        <div className="Left">
+          <Box className="LoadImageBox">
+            <div className="HeaderBox">
+              <h5 className="BoxTitle">Load Image</h5>
+            </div>
+            <input 
+        type="file" 
+        onChange={handleImageChange} 
+        disabled={isLoading} 
+      />
+        {/*<Stage />*/}
+        </Box>
+          <div className="ConfirmButtonBox">
+            <Button color="neutral" className="ConfirmButton" variant="solid">Confirm Selection</Button>
+          </div>
+          <Box className="PreviewBox">
+        <div className="HeaderBox">
+              <h5 className="BoxTitle">Preview</h5>
+            </div>
+              <img src={""} alt="Logo"></img>
+          </Box>
         </div>
-      </div>
+        <div className="Middle">
+          <Box className="InfoBox">
+            <div className="HeaderBox">
+              <h5 className="BoxTitle">Similar Products Information</h5>
+            </div>
+              <p className="InfoText">
+                
+              </p>
+            </Box>
+        </div>
+        <div className="Right">
+      <Box className="InfoBox">
+        <div className="HeaderBox">
+          <h5 className="BoxTitle">Similar Products Images</h5>
+        </div>
+      <ListForProducts mediaArray={cleanedAnswer}/>
+      </Box>
     </div>
-  )
-}
+      </div>
+      <div className="ConfirmButtonBox">
+            <Button color="neutral" className="ConfirmButton" variant="solid" onClick={handleAskBard} disabled={isLoading || !selectedImage}>Find Similar Products</Button>
+        </div>
+    </div>
+  );
+};
 
-export default App
+export default App;
