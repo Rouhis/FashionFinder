@@ -24,10 +24,14 @@ const IMAGE_PATH = "/assets/data/naulakko.jpg"
 const IMAGE_EMBEDDING = "/assets/data/naulakko.npy"
 const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
 let imageofmask = ""
+let xcoord = 0
+let ycoord = 0
 
 export const test = async (testing, click) => {
   console.log("clicks:", click[0])
   imageofmask = testing.src
+  xcoord = click[0].x
+  ycoord = click[0].y
 }
 
 const App = () => {
@@ -38,7 +42,7 @@ const App = () => {
     const [data, setData] = useState([{}])
 
     useEffect(() => {
-      fetch("http://localhost:5000/mask").then(
+      fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
           res => res.json()
       ).then(
         data => {
@@ -46,7 +50,7 @@ const App = () => {
           console.log(":DDDD", data)
         }
       )
-    }, [])
+    }, [imageofmask])
 
   console.log(":PP", data) 
 
@@ -196,7 +200,7 @@ const App = () => {
         onChange={handleImageChange} 
         disabled={isLoading} 
       />
-        {/*<Stage />*/}
+        <Stage />
         </Box>
           <div className="ConfirmButtonBox">
             <Button color="neutral" className="ConfirmButton" variant="solid">Confirm Selection</Button>

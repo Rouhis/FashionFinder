@@ -9,11 +9,11 @@ sys.path.insert(1, '../sam-test')
 import get_mask
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/mask": {"origins": "*"}})
+CORS(app)
 
-@app.route("/mask")
-def mask():
-    subprocess.run(["python", "get_mask.py"])
+@app.route("/mask/<x_value>/<y_value>")
+def mask(x_value=0, y_value=0):
+    subprocess.run(["python", "get_mask.py", x_value, y_value])
     return {"testing": ["Mask1", "Mask2"]}
 
 
