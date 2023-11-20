@@ -35,6 +35,20 @@ const App = () => {
     const [cleanedAnswer, setcleanedAnswer] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null); // New state for the image
+    const [data, setData] = useState([{}])
+
+    useEffect(() => {
+      fetch("http://localhost:5000/mask").then(
+          res => res.json()
+      ).then(
+        data => {
+          setData(data)
+          console.log(":DDDD", data)
+        }
+      )
+    }, [])
+
+  console.log(":PP", data) 
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
@@ -96,7 +110,7 @@ const App = () => {
     initModel()
 
     // Load the image
-    const url = new URL(IMAGE_PATH, location.origin)
+    const url = new URL(IMAGE_PATH, window.location.origin)
     loadImage(url)
 
     // Load the Segment Anything pre-computed embedding
