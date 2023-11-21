@@ -7,11 +7,16 @@ import ListForProducts from './List';
 import {useContext, useEffect} from 'react';
 
 
+
 const App = () => {
 
     const [cleanedAnswer, setcleanedAnswer] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null); // New state for the image
+    const [material, setMaterial] = useState("");
+    const [color, setColor] = useState("");
+
+    
 
     const handleImageChange = (e) => {
       setSelectedImage(e.target.files[0]);
@@ -26,10 +31,12 @@ const App = () => {
   
     const handleAskBard = async () => {
       setIsLoading(true);
+      console.log("material :", material);
+      console.log("queation", "Find me products similiar to this and material needs to be " + material + " and color " + color + " from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, url: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```")
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
-      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
+      formData.append('question', "Find me products similiar to this and material needs to be " + material + " and color " + color + " from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, url: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
   
       try {
         const response = await axios.post('http://localhost:3001/ask-bard', formData, {
@@ -80,9 +87,8 @@ const App = () => {
             <div className="HeaderBox">
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
-              <p className="InfoText">
-                
-              </p>
+            <input type="text" placeholder="Enter material" onChange={(e) => setMaterial(e.target.value)} />
+            <input type="text" placeholder="Enter color" onChange={(e) => setColor(e.target.value)} />
             </Box>
         </div>
     <div className="Right">
