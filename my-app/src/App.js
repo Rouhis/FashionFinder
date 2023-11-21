@@ -21,7 +21,7 @@ import npyjs from "npyjs"
 
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
-const IMAGE_EMBEDDING = "/assets/data/lonkero.npy"
+const IMAGE_EMBEDDING = "/assets/data/processed.npy"
 const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
 let imageofmask = ""
 let xcoord = 0
@@ -42,26 +42,38 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([{}])
 
-    useEffect(() => {
-      fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
-          res => res.json()
-      ).then(
-        data => {
-          setData(data)
-          console.log(":DDDD", data)
-        }
-      )
-    }, [imageofmask])
+    /*
+    try {
+      useEffect(() => {
+        fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
+            res => res.json()
+        ).then(
+          data => {
+            setData(data)
+            console.log(":DDDD", data)
+          }
+        )
+      }, [imageofmask])
+    } catch (e) {
+      console.log("Server is not on", e)
+    }
 
-  console.log(":PP", data) 
+  console.log(":PP", data)*/
 
   const handleImageChange = event => {
     setIsLoading(true);
+    const imgFormData = new FormData()
     const file = event.target.files[0];
     // Perform file validation and read the file if necessary
     // ...
     // After the file is read and is ready to be shown on the preview
     const imageUrl = URL.createObjectURL(file);
+    imgFormData.append("image", file)
+    axios.post("http://localhost:5000/createnpy", imgFormData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Important header for files
+      },
+    })
     setImageLoaded(true);
     setIsLoading(false);
     setSelectedImage(imageUrl);
