@@ -69,11 +69,12 @@ const App = () => {
     // After the file is read and is ready to be shown on the preview
     const imageUrl = URL.createObjectURL(file);
     imgFormData.append("image", file)
-    axios.post("http://localhost:5000/createnpy", imgFormData, {
+    const backendres = axios.post("http://localhost:5000/createnpy", imgFormData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Important header for files
       },
     })
+    console.log(":DDDDDDDDDDDDDD", backendres)
     setImageLoaded(true);
     setIsLoading(false);
     setSelectedImage(imageUrl);
