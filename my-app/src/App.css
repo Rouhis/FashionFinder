@@ -1,7 +1,5 @@
-/* Mobile First Styles */
 .App {
   background-color: #f4dbd8; /* Light Peach */
-  display: flex;
   flex-direction: column;
   color: #fff;
   min-height: 100vh;
@@ -15,39 +13,41 @@
 
 .Boxes {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
   color: #fff;
   padding: 20px;
 }
 
-.Left,
-.Middle,
+.Left {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 581px;
+}
+
+.Middle {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 581px;
+}
+
 .Right {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-  height: 500px;
-  margin: 10px;
+  height: 581px;
+
 }
 
-.InfoBox,
-.PreviewBox,
-.LoadImageBox {
-  width: 100%;
+.InfoBox {
+  width: 457px;
+  height: 581px;
   background-color: #c09891; /* Dark Salmon */
-  margin-bottom: 20px;
-}
-
-.PreviewBox,
-.LoadImageBox {
-  width: 100%;
-  height: 45%;
-  background-color: #c09891; /* Dark Salmon */
-  margin-bottom: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .ConfirmButton {
@@ -56,20 +56,21 @@
   background-color: #775144; /* Sienna */
 }
 
-.InfoText,
-.InfoBox {
+.PreviewBox {
+ /* width: 487px;
+  height: 251px;
+*/  background-color: #2a0800; /* Very Dark Brown */
+}
+
+.InfoText {
   font-size: 14px;
   line-height: 16px;
   font-weight: 700;
- /* padding: 30px 21px 43px 26px; */
-  width: 100%;
-  height: 469px;
+  padding: 30px 21px 43px 26px;
+  width: 410px;
+  height: 477px;
   margin: 0;
 }
-
-
-
-
 
 .HeaderBox {
   width: 100%;
@@ -79,44 +80,54 @@
 
 .BoxTitle {
   margin: 0;
+  width: 269px;
+  height: 20px;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 16px;
-  padding: 7px 10px 4px;
+  flex-shrink: 0;
+  padding: 7px 0 4px 10px;
 }
+
 
 .ConfirmButtonBox {
-  width: 100%;
-  padding: 7px 0;
+width: 100%;
+padding-top: 7px;
+padding-bottom: 7px;
+  
 }
 
-.LoadImageBox img,
-.PreviewBox img,
-.Card img {
+.LoadImageBox {
+/*  width: 457px;
+  height: 263px;
+  */
+  height: 270px;
   width: 100%;
-  height: auto;
+  background-color: #c09891; /* Dark Salmon */
+}
+
+.LoadImageBox img {
+  width: 100%;
+  height: 235px;
+}
+
+.PreviewBox img {
+  width: 100%;
+  height: 235px;
+}
+
+.Card {
+  padding: 10px;
+}
+
+.Card img {
+  width: 152px;
+  height: 205px;
   border-radius: 15px;
 }
 
-/* Tablet and larger */
-@media (min-width: 600px) {
-  .Boxes {
-    justify-content: space-between;
-  }
-
-  .Left,
-  .Middle,
-  .Right {
-    width: calc(33.3333% - 20px);
-  }
-}
-
-/* Desktop and larger */
-@media (min-width: 1024px) {
-  .Left,
-  .Middle,
-  .Right {
-    width: calc(33.3333% - 40px);
-  }
+.CardInfo {
+  flex-direction: column;
+  justify-content: space-evenly;
 }
