@@ -21,7 +21,7 @@ import npyjs from "npyjs"
 
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
-const IMAGE_EMBEDDING = "/assets/data/naulakko.npy"
+const IMAGE_EMBEDDING = "/assets/data/lonkero.npy"
 const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
 let imageofmask = ""
 let xcoord = 0
@@ -37,8 +37,9 @@ export const test = async (testing, click) => {
 const App = () => {
 
     const [cleanedAnswer, setcleanedAnswer] = useState([]);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null); // New state for the image
     const [data, setData] = useState([{}])
 
     useEffect(() => {
@@ -54,9 +55,39 @@ const App = () => {
 
   console.log(":PP", data) 
 
-  const handleImageChange = (e) => {
-    setSelectedImage(e.target.files[0]);
+  const handleImageChange = event => {
+    setIsLoading(true);
+    const file = event.target.files[0];
+    // Perform file validation and read the file if necessary
+    // ...
+    // After the file is read and is ready to be shown on the preview
+    const imageUrl = URL.createObjectURL(file);
+    setImageLoaded(true);
+    setIsLoading(false);
+    setSelectedImage(imageUrl);
+    loadImage(imageUrl); // Call loadImage with the new image URL
   };
+
+  
+  const loadImage = async (url) => {
+    try {
+      const img = new Image()
+      img.src = url
+      img.onload = () => {
+        const { height, width, samScale } = handleImageScale(img)
+        setModelScale({
+          height: height, // original image height
+          width: width, // original image width
+          samScale: samScale // scaling factor for image which has been resized to longest side 1024
+        })
+        img.width = width
+        img.height = height
+        setImage(img) // Here you will set the image in the context or state
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
@@ -114,34 +145,14 @@ const App = () => {
     initModel()
 
     // Load the image
-    const url = new URL(IMAGE_PATH, window.location.origin)
-    loadImage(url)
+
 
     // Load the Segment Anything pre-computed embedding
     Promise.resolve(loadNpyTensor(IMAGE_EMBEDDING, "float32")).then(embedding =>
       setTensor(embedding)
     )
   }, [])
-
-  const loadImage = async url => {
-    try {
-      const img = new Image()
-      img.src = url.href
-      img.onload = () => {
-        const { height, width, samScale } = handleImageScale(img)
-        setModelScale({
-          height: height, // original image height
-          width: width, // original image width
-          samScale: samScale // scaling factor for image which has been resized to longest side 1024
-        })
-        img.width = width
-        img.height = height
-        setImage(img)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
 
   // Decode a Numpy file into a tensor.
   const loadNpyTensor = async (tensorFile, dType) => {
@@ -196,11 +207,12 @@ const App = () => {
               <h5 className="BoxTitle">Load Image</h5>
             </div>
             <input 
-        type="file" 
-        onChange={handleImageChange} 
-        disabled={isLoading} 
-      />
-        <Stage />
+          type="file" 
+          onChange={handleImageChange} 
+          disabled={isLoading} 
+        
+        />
+        {imageLoaded && <Stage />}
         </Box>
           <div className="ConfirmButtonBox">
             <Button color="neutral" className="ConfirmButton" variant="solid">Confirm Selection</Button>
@@ -210,6 +222,7 @@ const App = () => {
               <h5 className="BoxTitle">Preview</h5>
             </div>
               <img src={""} alt="Logo"></img>
+              
           </Box>
         </div>
         <div className="Middle">
