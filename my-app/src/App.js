@@ -40,7 +40,7 @@ const App = () => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([{}])
+    const [data, setData] = useState("")
 
     /*
     try {
@@ -60,7 +60,7 @@ const App = () => {
 
   console.log(":PP", data)*/
 
-  const handleImageChange = event => {
+  const handleImageChange = async event => {
     setIsLoading(true);
     const imgFormData = new FormData()
     const file = event.target.files[0];
@@ -69,12 +69,13 @@ const App = () => {
     // After the file is read and is ready to be shown on the preview
     const imageUrl = URL.createObjectURL(file);
     imgFormData.append("image", file)
-    const backendres = axios.post("http://localhost:5000/createnpy", imgFormData, {
+    const backendres = await axios.post("http://localhost:5000/createnpy", imgFormData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Important header for files
       },
     })
     console.log(":DDDDDDDDDDDDDD", backendres)
+    setData(backendres)
     setImageLoaded(true);
     setIsLoading(false);
     setSelectedImage(imageUrl);
@@ -157,14 +158,11 @@ const App = () => {
     }
     initModel()
 
-    // Load the image
-
-
     // Load the Segment Anything pre-computed embedding
     Promise.resolve(loadNpyTensor(IMAGE_EMBEDDING, "float32")).then(embedding =>
       setTensor(embedding)
     )
-  }, [])
+  }, [data])
   
 
   // Decode a Numpy file into a tensor.
