@@ -1,108 +1,122 @@
-
-.App{
-  background-color: #E3B23C;
+/* Mobile First Styles */
+.App {
+  background-color: #f4dbd8; /* Light Peach */
+  display: flex;
   flex-direction: column;
-  color: white;
+  color: #fff;
   min-height: 100vh;
 }
-.title{
+
+.title {
   padding-top: 30px;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
 .Boxes {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  flex-direction: row;
-  justify-content: space-evenly;
-  color: white;
+  justify-content: center;
+  color: #fff;
   padding: 20px;
 }
 
-.InfoBox {
-  width: 457px;
-  height: 581px;
-  background-color: #1F2937;
-  overflow-x: hidden;
-  overflow-y: auto;
+.Left,
+.Middle,
+.Right {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+  margin: 10px;
 }
 
-.ConfirmButton{
+.InfoBox,
+.PreviewBox,
+.LoadImageBox {
+  width: 100%;
+  background-color: #c09891; /* Dark Salmon */
+  margin-bottom: 20px;
+}
+
+.PreviewBox,
+.LoadImageBox {
+  width: 100%;
+  height: 45%;
+  background-color: #c09891; /* Dark Salmon */
+  margin-bottom: 20px;
+}
+
+.ConfirmButton {
   width: 100%;
   height: 47px;
-  background-color: #404757;
+  background-color: #775144; /* Sienna */
 }
 
-.PreviewBox{
-  width: 487px;
-  height: 251px;
-  background-color: #1F2937;
-}
-
-.InfoText {
+.InfoText,
+.InfoBox {
   font-size: 14px;
   line-height: 16px;
   font-weight: 700;
-  padding-left: 26px;
-  padding-right: 21px;
-  padding-bottom: 43px;
-  padding-top: 30px;
-  width: 410px;
-  height: 477px;
-  margin: 0px;
+ /* padding: 30px 21px 43px 26px; */
+  width: 100%;
+  height: 469px;
+  margin: 0;
 }
+
+
+
+
 
 .HeaderBox {
   width: 100%;
   height: 31px;
-  background-color: #111827;
+  background-color: #bea8a7; /* Dusty Rose */
 }
 
 .BoxTitle {
   margin: 0;
-  width: 269px;
-  height: 20px;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 16px;
-  flex-shrink: 0;
-  padding-left: 10px;
-  padding-right: 0;
-  padding-bottom: 4px;
-  padding-top: 7px;
+  padding: 7px 10px 4px;
 }
 
-.ConfirmButtonBox{
-  padding-right: 7;
-  padding-bottom: 4px;
-  padding-top: 7px;
-}
-.LoadImageBox{
-  width: 487px;
-  height: 263px;
-  background-color: #1F2937;
-}
-
-.LoadImageBox img{
+.ConfirmButtonBox {
   width: 100%;
-  height: 235px;
+  padding: 7px 0;
 }
 
-.PreviewBox img{
+.LoadImageBox img,
+.PreviewBox img,
+.Card img {
   width: 100%;
-  height: 235px;
-}
-.Card {
-  padding: 10px;
-}
-.Card img{
-  width: 152px;
-  height: 205px;
+  height: auto;
   border-radius: 15px;
 }
-.CardInfo{
-  flex-direction: column;
-  justify-content: space-evenly;
+
+/* Tablet and larger */
+@media (min-width: 600px) {
+  .Boxes {
+    justify-content: space-between;
+  }
+
+  .Left,
+  .Middle,
+  .Right {
+    width: calc(33.3333% - 20px);
+  }
+}
+
+/* Desktop and larger */
+@media (min-width: 1024px) {
+  .Left,
+  .Middle,
+  .Right {
+    width: calc(33.3333% - 40px);
+  }
 }

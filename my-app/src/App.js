@@ -1,6 +1,5 @@
 import './App.css';
 import React, {useState} from 'react';
-import Button from '@mui/joy/Button';
 import { Box } from '@mui/system';
 import PreviewPic from './preview_pic.png'
 import axios from 'axios';
@@ -67,7 +66,7 @@ const App = () => {
       />
         </Box>
           <div className="ConfirmButtonBox">
-            <Button color="neutral" className="ConfirmButton" variant="solid" onClick={handleAskBard} disabled={isLoading || !selectedImage}>Confirm Selection</Button>
+            <button className="ConfirmButton" variant="solid" onClick={handleAskBard} disabled={isLoading || !selectedImage}>Confirm Selection</button>
           </div>
           <Box className="PreviewBox">
         <div className="HeaderBox">
@@ -86,7 +85,7 @@ const App = () => {
               </p>
             </Box>
         </div>
-        <div className="Right">
+    <div className="Right">
       <Box className="InfoBox">
         <div className="HeaderBox">
           <h5 className="BoxTitle">Similar Products Images</h5>
@@ -96,7 +95,7 @@ const App = () => {
     </div>
       </div>
       <div className="ConfirmButtonBox">
-            <Button color="neutral" className="ConfirmButton" variant="solid">Find Similar Products</Button>
+            <button className="ConfirmButton" variant="solid">Find Similar Products</button>
         </div>
     </div>
   );
