@@ -38,6 +38,10 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.(scss|sass)$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+      {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
           "file-loader?hash=sha512&digest=hex&name=img/[contenthash].[ext]",

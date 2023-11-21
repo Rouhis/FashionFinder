@@ -23,7 +23,7 @@ if __name__ == "__main__":
         yarg = ""
 
     # Save an image to a variable (currently uses a specific image for testing).
-    image = cv2.imread('../my-app/src/assets/data/naulakko.jpg')
+    image = cv2.imread('../my-app/src/assets/data/temp.png')
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     saved_mask_path = "../my-app/src/assets/data/mask.png"
 
@@ -69,8 +69,7 @@ if __name__ == "__main__":
         img.putdata(newData)
         
         # Change the size of the image to a smaller one. 
-        new_mask = img.resize((640, 480))
-        new_mask.save(saved_mask_path, "PNG")
+        img.save(saved_mask_path, "PNG")
 
     # Check if the parameters were given properly, if so use the given parameters for the get_mask function.
     # If the parameters weren't passed properly, call the get_mask function with default values.

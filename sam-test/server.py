@@ -18,6 +18,7 @@ CORS(app)
 @app.route("/mask/<x_value>/<y_value>")
 def mask(x_value=0, y_value=0):
     subprocess.run(["python", "get_mask.py", x_value, y_value])
+    return ":DD"
 
 
 @app.route("/createnpy", methods=["POST", "GET"])

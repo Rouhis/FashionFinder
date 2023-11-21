@@ -10,6 +10,7 @@ import ListForProducts from './List';
 import { InferenceSession } from "onnxruntime-web"
 import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
+import "./assets/scss/App.scss"
 import { handleImageScale } from "./components/helpers/scaleHelper"
 import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
@@ -38,27 +39,30 @@ const App = () => {
 
     const [cleanedAnswer, setcleanedAnswer] = useState([]);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [maskLoaded, setMaskLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState("")
 
-    /*
-    try {
-      useEffect(() => {
-        fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
+    const onMaskClick = async () => {
+      if (imageofmask != "") {
+        try {
+          test = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
             res => res.json()
-        ).then(
-          data => {
-            setData(data)
-            console.log(":DDDD", data)
-          }
-        )
-      }, [imageofmask])
-    } catch (e) {
-      console.log("Server is not on", e)
+          ).then(
+            data => {
+              setData(data)
+              console.log(":DDDD", data)
+            }
+          )
+        } catch (e) {
+          console.log("Server is not on", e)
+        }
+        setMaskLoaded(true)
+      } else {
+        console.log("Mask wasn't clicked")
+      }
     }
-
-  console.log(":PP", data)*/
 
   const handleImageChange = async event => {
     setIsLoading(true);
@@ -78,7 +82,7 @@ const App = () => {
     setData(backendres)
     setImageLoaded(true);
     setIsLoading(false);
-    setSelectedImage(imageUrl);
+    setSelectedImage(file);
     loadImage(imageUrl); // Call loadImage with the new image URL
   };
 
@@ -102,6 +106,10 @@ const App = () => {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    onMaskClick()
+  }, [imageofmask])
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
@@ -223,7 +231,6 @@ const App = () => {
           disabled={isLoading} 
         
         />
-        {imageLoaded && <Stage />}
         </Box>
           <div className="ConfirmButtonBox">
             <Button color="neutral" className="ConfirmButton" variant="solid">Confirm Selection</Button>
@@ -232,7 +239,7 @@ const App = () => {
         <div className="HeaderBox">
               <h5 className="BoxTitle">Preview</h5>
             </div>
-              <img src={""} alt="Logo"></img>
+              <img src={maskLoaded ? "/assets/data/mask.png": undefined} alt="Logo"></img>
               
           </Box>
         </div>
@@ -241,9 +248,9 @@ const App = () => {
             <div className="HeaderBox">
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
-              <p className="InfoText">
-                
-              </p>
+              <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", overflow: "hidden"}}>
+                {imageLoaded && <Stage />}
+              </div>
             </Box>
         </div>
         <div className="Right">
