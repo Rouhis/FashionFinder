@@ -44,6 +44,8 @@ const App = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState("")
+    const [material, setMaterial] = useState("");
+    const [color, setColor] = useState("");
 
     const onMaskClick = async () => {
       if (imageofmask != "") {
@@ -123,7 +125,7 @@ const App = () => {
 
     const formData = new FormData();
     formData.append('image', selectedImage); // Append the image to the FormData object
-    formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}``` dont add anything after json");
+    formData.append('question', "Find me products similiar to this from zalando and return answer in json{products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]}dont add anything after json");
 
     try {
       const response = await axios.post('http://localhost:5000/askbard', formData, {
@@ -219,6 +221,8 @@ const App = () => {
   return (
     <div className="App"> 
       <h1 className="title">Fashion Finder</h1>
+      <input type="text" placeholder="Enter material" onChange={(e) => setMaterial(e.target.value)} />
+            <input type="text" placeholder="Enter color" onChange={(e) => setColor(e.target.value)} />
       <div className="Boxes">
         <div className="Left">
           <Box className="LoadImageBox">
@@ -257,7 +261,7 @@ const App = () => {
         <div className="HeaderBox">
           <h5 className="BoxTitle">Similar Products Images</h5>
         </div>
-      <ListForProducts mediaArray={cleanedAnswer}/>
+      <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
       </Box>
     </div>
       </div>

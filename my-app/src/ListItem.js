@@ -3,7 +3,7 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 
-function ListItem({ mediaArray }) {
+function ListItem({mediaArray, material,color})  {
   //If mediaArray is empty listitem will return null
 
   if (!mediaArray || !mediaArray.products) {
@@ -28,8 +28,8 @@ function ListItem({ mediaArray }) {
               Price: {productArray[i].price} €
             </Typography>
             <Typography level="title-md" textColor="inherit">
-              <a href={productArray[i].link}>Link</a> 
-            </Typography>
+              <a href={`https://en.zalando.de/${productArray[i].sex}/_${color}/?q=${productArray[i].specialName}&upper_material=${material}`}>Link</a>
+            </Typography>      
           </CardContent>
         </Card>
       </div>
