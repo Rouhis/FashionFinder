@@ -17,7 +17,7 @@ CORS(app)
 
 @app.route("/mask/<x_value>/<y_value>")
 def mask(x_value=0, y_value=0):
-    subprocess.run(["python", "get_mask.py", x_value, y_value])
+    subprocess.Popen(["python", "get_mask.py", x_value, y_value])
     return ":DD"
 
 
@@ -28,15 +28,11 @@ def process():
     if file.filename != "":
         print(":DDD", file)
         file.save(uploaded_path)
-        print(":DDD", file)
         print("Processing image started")
         checkpoint = "sam_vit_h_4b8939.pth"
         model_type = "vit_h"
-        print("testi")
         sam = sam_model_registry[model_type](checkpoint=checkpoint)
-        print("crash?")
         image = cv2.imread(uploaded_path)
-        print(":DD", image)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         sam.to(device='cuda')
         predictor = SamPredictor(sam)

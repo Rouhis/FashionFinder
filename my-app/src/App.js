@@ -19,6 +19,7 @@ import AppContext from "./components/hooks/createContext"
 const ort = require("onnxruntime-web")
 /* @ts-ignore */
 import npyjs from "npyjs"
+import DynamicMask from './components/DynamicMask';
 
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
@@ -239,8 +240,7 @@ const App = () => {
         <div className="HeaderBox">
               <h5 className="BoxTitle">Preview</h5>
             </div>
-              <img src={maskLoaded ? "/assets/data/mask.png": undefined} alt="Logo"></img>
-              
+              <DynamicMask />
           </Box>
         </div>
         <div className="Middle">

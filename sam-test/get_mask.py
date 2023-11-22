@@ -8,7 +8,7 @@ from PIL import Image as im
 
 
 if __name__ == "__main__":
-        # number of passed arguments.
+    # number of passed arguments.
     n = len(sys.argv)
     print(f"Passed arguments amount: {n}")
     
