@@ -32,11 +32,10 @@ const App = () => {
     const handleAskBard = async () => {
       setIsLoading(true);
       console.log("material :", material);
-      console.log("queation", "Find me products similiar to this and material needs to be " + material + " and color " + color + " from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, url: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```")
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
-      formData.append('question', "Find me products similiar to this and material needs to be " + material + " and color " + color + " from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, url: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
+      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]}``` dont add anything after json");
   
       try {
         const response = await axios.post('http://localhost:3001/ask-bard', formData, {
@@ -96,7 +95,7 @@ const App = () => {
         <div className="HeaderBox">
           <h5 className="BoxTitle">Similar Products Images</h5>
         </div>
-      <ListForProducts mediaArray={cleanedAnswer}/>
+      <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
       </Box>
     </div>
       </div>
