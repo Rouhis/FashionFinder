@@ -116,26 +116,25 @@ const App = () => {
   useEffect(() => {
     console.log('Cleaned Answer :', cleanedAnswer);
     console.log("setted image state: ", selectedImage)
-  }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
+  }, [cleanedAnswer,".assets/data/mask.png"]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {
     setIsLoading(true);
 
     const formData = new FormData();
     formData.append('image', selectedImage); // Append the image to the FormData object
-    formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```");
+    formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}``` dont add anything after json");
 
     try {
-      const response = await axios.post('http://localhost:3001/ask-bard', formData, {
+      const response = await axios.post('http://localhost:5000/askbard', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // Important header for files
         },
       });
-      setcleanedAnswer(response.data.parsedAnswer);
+      setcleanedAnswer(response.data.parsed_answer);
      } catch (error) {
       console.error('Error fetching response from Bard:', error);
     }
-
     setIsLoading(false);
   }
 

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request ,jsonify
 from flask_cors import CORS, cross_origin
 import os
 import sys
@@ -7,6 +7,9 @@ import cv2
 import numpy as np
 from segment_anything import sam_model_registry, SamPredictor
 from PIL import Image
+from bardapi import Bard
+import io
+import json
 
 sys.path.insert(1, '../sam-test')
 
@@ -44,5 +47,29 @@ def process():
     
     return
 
+@app.route("/askbard", methods=["POST"])
+def askBard():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+    formdata = request.files["image"]
+    question = request.form["question"]
+    imagebytes = formdata.read()
+    bard_client = Bard(token='dQi4my_HUFEdGt8YlL_1BXu1yZpDQXdp44YbFH5zELeErrs-7_X2FDemHPV5_-8qZT8OMw.') 
+    response = bard_client.ask_about_image(question, imagebytes)
+    # Assuming the response contains a JSON with the needed data
+    content = response.get('content')
+    if content:
+        # Process the content as per the expected response format
+        print(content)
+        cleaned_answer = content.replace("```json", "").replace("```", "")
+        print(cleaned_answer)
+        parsed_answer = json.loads(cleaned_answer)
+        print(parsed_answer)
+        return jsonify(parsed_answer=parsed_answer)
+    else:
+        return jsonify({"error": "Invalid response from Bard service"}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
