@@ -115,7 +115,7 @@ const App = () => {
   useEffect(() => {
     console.log('Cleaned Answer :', cleanedAnswer);
     console.log("setted image state: ", selectedImage)
-  }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
+  }, [cleanedAnswer,".assets/data/mask.png"]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {
     setIsLoading(true);
