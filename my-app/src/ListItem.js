@@ -7,7 +7,6 @@ function ListItem({ mediaArray }) {
   //If mediaArray is empty listitem will return null
 
   if (!mediaArray || !mediaArray.products) {
-        console.log("MediaArray is empty", mediaArray);
     return null;
   }
 
@@ -15,7 +14,6 @@ function ListItem({ mediaArray }) {
   const cardElements = [];
 
   for (let i = 0; i < productArray.length; i++) {
-    console.log("Single item in mediaArray ", mediaArray.products[i]);
     cardElements.push(
       <div className="Card" key={i}>
         <Card orientation="horizontal" className="CardInfo" variant="solid">
