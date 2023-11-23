@@ -4,22 +4,29 @@
 // This source code is licensed under the license found in the
 // LICENSE file in the root directory of this source tree.
 import './App.css';
-import Button from '@mui/joy/Button';
-import { Box } from '@mui/system';
-import ListForProducts from './List';
-import { InferenceSession } from "onnxruntime-web"
-import React, { useContext, useEffect, useState } from "react"
-import axios from "axios"
 import "./assets/scss/App.scss"
+import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
 import { handleImageScale } from "./components/helpers/scaleHelper"
 import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
+import DynamicMask from './components/DynamicMask';
 import Stage from "./components/Stage"
 import AppContext from "./components/hooks/createContext"
+import Button from '@mui/joy/Button';
+import { Box } from '@mui/system';
+import Slider from "@mui/material/Slider";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import ListForProducts from './List';
+import { InferenceSession } from "onnxruntime-web"
+import React, { useContext, useEffect, useState, useCallback } from "react"
+import axios from "axios"
 const ort = require("onnxruntime-web")
 /* @ts-ignore */
 import npyjs from "npyjs"
-import DynamicMask from './components/DynamicMask';
+
 
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
@@ -37,35 +44,47 @@ export const test = async (testing, click) => {
 }
 
 const App = () => {
+  const [cleanedAnswer, setcleanedAnswer] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null); // New state for the image
+  const [price, setPrice] = useState(0);
+  //const { color, material } = require('./SelectBox');
+  const [color, setColor] = useState("");
+  const [material, setMaterial] = useState("");
 
-    const [cleanedAnswer, setcleanedAnswer] = useState([]);
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const [maskLoaded, setMaskLoaded] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState("")
-    const [material, setMaterial] = useState("");
-    const [color, setColor] = useState("");
 
-    const onMaskClick = async () => {
-      if (imageofmask != "") {
-        try {
-          test = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
-            res => res.json()
-          ).then(
-            data => {
-              setData(data)
-              console.log(":DDDD", data)
-            }
-          )
-        } catch (e) {
-          console.log("Server is not on", e)
-        }
-        setMaskLoaded(true)
-      } else {
-        console.log("Mask wasn't clicked")
+
+
+
+
+  const handleSliderChange = (event, newPrice) => {
+    setPrice(newPrice);
+    console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
+  };
+
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [maskLoaded, setMaskLoaded] = useState(false);
+  const [data, setData] = useState("")
+
+  const onMaskClick = async () => {
+    if (imageofmask != "") {
+      try {
+        test = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
+          res => res.json()
+        ).then(
+          data => {
+            setData(data)
+            console.log(":DDDD", data)
+          }
+        )
+      } catch (e) {
+        console.log("Server is not on", e)
       }
+      setMaskLoaded(true)
+    } else {
+      console.log("Mask wasn't clicked")
     }
+  }
 
   const handleImageChange = async event => {
     setIsLoading(true);
@@ -88,6 +107,11 @@ const App = () => {
     setSelectedImage(file);
     loadImage(imageUrl); // Call loadImage with the new image URL
   };
+/////////////////////////////NÄMÄ OMAAN TIEDOSTOON KIIIIIIIIIIIIITOS/////////////////////////////////////////////////
+const handleSelectBoxChangeBrand = (event) => {
+  setColor(event.target.value);
+  console.log(event.target.value)
+};
 
   
   const loadImage = async (url) => {
@@ -136,6 +160,51 @@ const App = () => {
       setcleanedAnswer(response.data.parsed_answer);
      } catch (error) {
       console.error('Error fetching response from Bard:', error);
+const handleSelectBoxChangeMaterial = (event) => {
+  setMaterial(event.target.value);
+  console.log(event.target.value)
+};
+
+
+const SelectBoxMaterial = ({name}) => {
+
+
+return(
+<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+<InputLabel id="select-small-label">{name}</InputLabel>
+<Select labelId="select-small-label" id="select-small" label={name} defaultValue={material} onChange={handleSelectBoxChangeMaterial}>
+  <MenuItem value="">
+  <em>None</em>
+  </MenuItem>
+  <MenuItem value={"Leather"}>Leather</MenuItem>
+  <MenuItem value={"Wool"}>Wool</MenuItem>
+  <MenuItem value={"Polyester"}>Polyester</MenuItem>
+</Select>
+</FormControl>
+);
+};
+
+
+const SelectBoxColor = ({name}) => {
+
+
+return(
+<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+<InputLabel id="select-small-label">{name}</InputLabel>
+<Select labelId="select-small-label" id="select-small" label={name} defaultValue={color} onChange={handleSelectBoxChangeBrand}>
+  <MenuItem value="">
+  <em>None</em>
+  </MenuItem>
+  <MenuItem value={"Black"}>Black</MenuItem>
+  <MenuItem value={"White"}>White</MenuItem>
+  <MenuItem value={"Red"}>Red</MenuItem>
+  <MenuItem value={"Yellow"}>Yellow</MenuItem>
+  <MenuItem value={"Blue"}>Blue</MenuItem>
+</Select>
+</FormControl>
+);
+};
+//////////////////////////////////////////////////////////////////////////////
     }
     setIsLoading(false);
   }
@@ -218,57 +287,94 @@ const App = () => {
     }
   }
 
+  function valuetext(value) {
+    return `${value}`;
+  }
+
+  function printvalue() {
+    valuetext();
+    document.getElementById("PriceRange").value = "76";
+  }
+
+  ///////////////////////// Ladattu kuva näkyviin////////////////////////////
+  //    <img src={ URL.createObjectURL(selectedImage)} alt="Logo"></img>
+
   return (
-    <div className="App"> 
+    <div className="App">
       <h1 className="title">Fashion Finder</h1>
-      <input type="text" placeholder="Enter material" onChange={(e) => setMaterial(e.target.value)} />
-            <input type="text" placeholder="Enter color" onChange={(e) => setColor(e.target.value)} />
       <div className="Boxes">
         <div className="Left">
-          <Box className="LoadImageBox">
-            <div className="HeaderBox">
-              <h5 className="BoxTitle">Load Image</h5>
-            </div>
-            <input 
-          type="file" 
-          onChange={handleImageChange} 
-          disabled={isLoading} 
-        
-        />
-        </Box>
-          <div className="ConfirmButtonBox">
-            <Button color="neutral" className="ConfirmButton" variant="solid">Confirm Selection</Button>
+          <div className="HeaderBox">
+            <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="PreviewBox">
-        <div className="HeaderBox">
-              <h5 className="BoxTitle">Preview</h5>
-            </div>
-              <DynamicMask />
+          <Box className="LoadImageBox">
+            <input
+              type="file"
+              onChange={handleImageChange}
+              disabled={isLoading}
+            />
+            {imageLoaded && <Stage />}
           </Box>
+          <div className="ConfirmButtonBox">
+            <button
+              className="ConfirmButton"
+              variant="solid"
+              onClick={handleAskBard}
+              disabled={isLoading || !selectedImage}
+            >
+              Confirm Selection
+            </button>
+          </div>
         </div>
         <div className="Middle">
-          <Box className="InfoBox">
-            <div className="HeaderBox">
-              <h5 className="BoxTitle">Similar Products Information</h5>
-            </div>
-              <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", overflow: "hidden"}}>
-                {imageLoaded && <Stage />}
-              </div>
+          <div className="HeaderBox">
+            <h5 className="BoxTitle">Selected Clothing</h5>
+          </div>
+          <div className="OptionBox">
+            <SelectBoxMaterial name={"Material"} ></SelectBoxMaterial>
+            <SelectBoxColor name={"Color"} id="ColorBox"></SelectBoxColor>
+            <Box sx={{ width: 170 }}>
+              <label>Max price</label>
+              <Slider
+                id="PriceRange"
+                max={1000}
+                min={0}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                onChange={handleSliderChange}
+              />
             </Box>
+          </div>
+          <Box className="InfoBox">
+            <p className="InfoText"></p>
+            <DynamicMask />
+          </Box>
         </div>
         <div className="Right">
-      <Box className="InfoBox">
-        <div className="HeaderBox">
-          <h5 className="BoxTitle">Similar Products Images</h5>
+          <div className="HeaderBox">
+            <h5 className="BoxTitle">Similar Products Images</h5>
+          </div>
+          <Box className="InfoBox">
+          <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
+          </Box>
+          <div className="ConfirmButtonBox">
+            <button
+              className="ConfirmButton"
+              variant="solid"
+              disabled={isLoading || !selectedImage}
+            >
+              Make search again
+            </button>
+          </div>
         </div>
-      <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
-      </Box>
-    </div>
-      </div>
+        </div>
       <div className="ConfirmButtonBox">
-            <Button color="neutral" className="ConfirmButton" variant="solid" onClick={handleAskBard} disabled={isLoading || !selectedImage}>Find Similar Products</Button>
-        </div>
-    </div>
+        <button className="ConfirmButton" variant="solid" onClick={printvalue}>
+          Find Similar Products
+        </button>
+      </div>
+      </div>
+      
   );
 };
 
