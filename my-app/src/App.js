@@ -8,6 +8,7 @@ import { useContext, useEffect } from "react";
 import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
 import Slider from "@mui/material/Slider";
 
+
 const App = () => {
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,32 +20,27 @@ const App = () => {
   };
 
 
-
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
   };
 
-  //Test logs to see that states have updated correctly
-  useEffect(() => {
-    console.log("Cleaned Answer :", cleanedAnswer);
-    console.log("setted image state: ", selectedImage);
-  }, [cleanedAnswer, selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
-
-  const handleAskBard = async () => {
-    setIsLoading(true);
-
-    const formData = new FormData();
-    formData.append("image", selectedImage); // Append the image to the FormData object
-    formData.append(
-      "question",
-      "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name ,brand:brand name no sex included ,price:price, link: start with (en.zalando.de/men or women/?q=product name) then add product name add + in every space in product name ),etc.]}```"
-    );
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/ask-bard",
-        formData,
-        {
+//Test logs to see that states have updated correctly
+    useEffect(() => {
+      console.log('Cleaned Answer :', cleanedAnswer);
+      console.log("setted image state: ", selectedImage)
+    }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
+  
+  
+    const handleAskBard = async () => {
+      setIsLoading(true);
+      console.log("material :", material);
+  
+      const formData = new FormData();
+      formData.append('image', selectedImage); // Append the image to the FormData object
+      formData.append('question', "Find me products similiar to this from zalando and return answer in ```json{products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]}``` dont add anything after json");
+  
+      try {
+        const response = await axios.post('http://localhost:3001/ask-bard', formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Important header for files
           },
@@ -125,7 +121,7 @@ const App = () => {
             <h5 className="BoxTitle">Similar Products Images</h5>
           </div>
           <Box className="InfoBox">
-            <ListForProducts mediaArray={cleanedAnswer} />
+          <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
           </Box>
           <div className="ConfirmButtonBox">
             <button
@@ -137,13 +133,14 @@ const App = () => {
             </button>
           </div>
         </div>
-      </div>
+        </div>
       <div className="ConfirmButtonBox">
         <button className="ConfirmButton" variant="solid" onClick={printvalue}>
           Find Similar Products
         </button>
       </div>
-    </div>
+      </div>
+      
   );
 };
 
