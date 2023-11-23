@@ -14,6 +14,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the image
   const [price, setPrice] = useState(0);
+  const [material, setMaterial] = useState("");
+  const [color, setColor] = useState("");
 
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
@@ -99,7 +101,7 @@ const App = () => {
           </div>
           <div className="OptionBox">
             <SelectBoxMaterial name={"Material"} ></SelectBoxMaterial>
-            <SelectBoxColor name={"?????"} id="BrandBox"></SelectBoxColor>
+            <SelectBoxColor name={"Color"} id="ColorBox"></SelectBoxColor>
             <Box sx={{ width: 170 }}>
               <label>Max price</label>
               <Slider

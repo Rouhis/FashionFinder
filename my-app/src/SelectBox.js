@@ -32,10 +32,10 @@ return(
 
 export const SelectBoxColor = ({name}) => {
 
-    const [brand, setBrand] = useState("");
+    const [color, setColor] = useState("");
 
     const handleSelectBoxChangeBrand = (event) => {
-        setBrand(event.target.value);
+        setColor(event.target.value);
         console.log(event.target.value)
       };
     
@@ -47,9 +47,11 @@ return(
     <MenuItem value="">
     <em>None</em>
     </MenuItem>
-    <MenuItem value={"ONSE"}>ONSE</MenuItem>
-    <MenuItem value={"OSHEE"}>OSHEE</MenuItem>
-    <MenuItem value={"4MOVE"}>4MOVE</MenuItem>
+    <MenuItem value={"Black"}>Black</MenuItem>
+    <MenuItem value={"White"}>White</MenuItem>
+    <MenuItem value={"Red"}>Red</MenuItem>
+    <MenuItem value={"Yellow"}>Yellow</MenuItem>
+    <MenuItem value={"Blue"}>Blue</MenuItem>
   </Select>
 </FormControl>
 );
