@@ -9,7 +9,6 @@ import "./assets/scss/App.scss"
 import { handleImageScale } from "./components/helpers/scaleHelper"
 import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
-import DynamicMask from './components/DynamicMask';
 import Stage from "./components/Stage"
 import AppContext from "./components/hooks/createContext"
 import Button from '@mui/joy/Button';
@@ -119,6 +118,10 @@ const App = () => {
       } catch (e) {
         console.log("Server is not on", e)
       }
+      const timeStamp = new Date().getTime()
+      const img = new Image()
+      img.src = `../assets/data/mask.png?t=${timeStamp}`
+      setMaskedImg(img)
       setMaskLoaded(true)
     } else {
       console.log("Mask wasn't clicked")
@@ -206,7 +209,8 @@ const handleSelectBoxChangeBrand = (event) => {
   const {
     clicks: [clicks],
     image: [, setImage],
-    maskImg: [, setMaskImg]
+    maskImg: [, setMaskImg],
+    maskedImg: [maskedImg, setMaskedImg]
   } = useContext(AppContext)
   const [model, setModel] = useState(null) // ONNX model
   const [tensor, setTensor] = useState(null) // Image embedding tensor
@@ -293,6 +297,13 @@ const handleSelectBoxChangeBrand = (event) => {
   ///////////////////////// Ladattu kuva näkyviin////////////////////////////
   //    <img src={ URL.createObjectURL(selectedImage)} alt="Logo"></img>
 
+  useEffect(() => {
+    const timeStamp = new Date().getTime()
+      const img = new Image()
+      img.src = `../assets/data/mask.png?t=${timeStamp}`
+      setMaskedImg(img)
+  }, [maskedImg])
+
   return (
     <div className="App">
       <h1 className="title">Fashion Finder</h1>
@@ -301,7 +312,7 @@ const handleSelectBoxChangeBrand = (event) => {
           <div className="HeaderBox">
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="LoadImageBox">
+          <Box className="InfoBox">
             <input
               type="file"
               onChange={handleImageChange}
@@ -340,8 +351,7 @@ const handleSelectBoxChangeBrand = (event) => {
             </Box>
           </div>
           <Box className="InfoBox">
-            <p className="InfoText"></p>
-            <DynamicMask />
+            <img src={maskLoaded ? maskedImg.src : undefined} alt="Image of a mask"></img>
           </Box>
         </div>
         <div className="Right">
