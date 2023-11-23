@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Box } from "@mui/system";
 import PreviewPic from "./preview_pic.png";
 import axios from "axios";
@@ -7,6 +7,11 @@ import ListForProducts from "./List";
 import { useContext, useEffect } from "react";
 import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
 import Slider from "@mui/material/Slider";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+
 
 
 const App = () => {
@@ -14,28 +19,78 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the image
   const [price, setPrice] = useState(0);
-  const [material, setMaterial] = useState("");
+  //const { color, material } = require('./SelectBox');
   const [color, setColor] = useState("");
+  const [material, setMaterial] = useState("");
+
+
+
+
+
 
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
+    console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
   };
-
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
   };
+/////////////////////////////NÄMÄ OMAAN TIEDOSTOON KIIIIIIIIIIIIITOS/////////////////////////////////////////////////
+const handleSelectBoxChangeBrand = (event) => {
+  setColor(event.target.value);
+  console.log(event.target.value)
+};
 
-//Test logs to see that states have updated correctly
-    useEffect(() => {
-      console.log('Cleaned Answer :', cleanedAnswer);
-      console.log("setted image state: ", selectedImage)
-    }, [cleanedAnswer,selectedImage]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
-  
+const handleSelectBoxChangeMaterial = (event) => {
+  setMaterial(event.target.value);
+  console.log(event.target.value)
+};
+
+
+const SelectBoxMaterial = ({name}) => {
+
+
+return(
+<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+<InputLabel id="select-small-label">{name}</InputLabel>
+<Select labelId="select-small-label" id="select-small" label={name} defaultValue={material} onChange={handleSelectBoxChangeMaterial}>
+  <MenuItem value="">
+  <em>None</em>
+  </MenuItem>
+  <MenuItem value={"Leather"}>Leather</MenuItem>
+  <MenuItem value={"Wool"}>Wool</MenuItem>
+  <MenuItem value={"Polyester"}>Polyester</MenuItem>
+</Select>
+</FormControl>
+);
+};
+
+
+const SelectBoxColor = ({name}) => {
+
+
+return(
+<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+<InputLabel id="select-small-label">{name}</InputLabel>
+<Select labelId="select-small-label" id="select-small" label={name} defaultValue={color} onChange={handleSelectBoxChangeBrand}>
+  <MenuItem value="">
+  <em>None</em>
+  </MenuItem>
+  <MenuItem value={"Black"}>Black</MenuItem>
+  <MenuItem value={"White"}>White</MenuItem>
+  <MenuItem value={"Red"}>Red</MenuItem>
+  <MenuItem value={"Yellow"}>Yellow</MenuItem>
+  <MenuItem value={"Blue"}>Blue</MenuItem>
+</Select>
+</FormControl>
+);
+};
+//////////////////////////////////////////////////////////////////////////////
   
     const handleAskBard = async () => {
       setIsLoading(true);
-      console.log("material :", material);
+      console.log("material :", SelectBoxMaterial.material);
   
       const formData = new FormData();
       formData.append('image', selectedImage); // Append the image to the FormData object
@@ -57,13 +112,12 @@ const App = () => {
   };
 
   function valuetext(value) {
-    return `${value}°C`;
+    return `${value}`;
   }
 
   function printvalue() {
     valuetext();
     document.getElementById("PriceRange").value = "76";
-    console.log("perse");
   }
 
   ///////////////////////// Ladattu kuva näkyviin////////////////////////////

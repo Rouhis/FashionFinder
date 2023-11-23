@@ -4,6 +4,7 @@ import Typography from "@mui/joy/Typography";
 
 function ListItem({mediaArray, material,color}) {
   //If mediaArray is empty listitem will return null
+  console.log("Väri ja materiaalii LISTITEMISSÄ", material, color)
 
   if (!mediaArray || !mediaArray.products) {
         console.log("MediaArray is empty", mediaArray);

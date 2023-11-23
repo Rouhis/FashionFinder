@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useContext, useEffect } from "react";
 
 
 export const SelectBoxMaterial = ({name}) => {
@@ -30,6 +31,8 @@ return(
 );
 };
 
+export default SelectBoxMaterial
+
 export const SelectBoxColor = ({name}) => {
 
     const [color, setColor] = useState("");
@@ -38,7 +41,9 @@ export const SelectBoxColor = ({name}) => {
         setColor(event.target.value);
         console.log(event.target.value)
       };
-    
+      useEffect(()=>{
+        console.log("perserfe", color)
+      },[color])
 
 return(
 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -47,7 +52,7 @@ return(
     <MenuItem value="">
     <em>None</em>
     </MenuItem>
-    <MenuItem value={"Black"}>Black</MenuItem>
+    <MenuItem value={"Black"} onClick={() => setColor("Black")}>Black</MenuItem>
     <MenuItem value={"White"}>White</MenuItem>
     <MenuItem value={"Red"}>Red</MenuItem>
     <MenuItem value={"Yellow"}>Yellow</MenuItem>
