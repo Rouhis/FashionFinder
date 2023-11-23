@@ -16,7 +16,7 @@ function ListItem({mediaArray, material,color}) {
   const cardElements = [];
 
   for (let i = 0; i < productArray.length; i++) {
-    console.log("Single item in mediaArray ", mediaArray.products[i]);
+    console.log("Single item in mediaArray ", mediaArray.products[i], ":DDD", material, color);
     cardElements.push(
       <div className="Card" key={i}>
         <Card orientation="horizontal" className="CardInfo" variant="outlined" color="neutral">

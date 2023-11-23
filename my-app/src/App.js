@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 import './App.css';
 import "./assets/scss/App.scss"
-import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
+//import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
 import { handleImageScale } from "./components/helpers/scaleHelper"
 import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
@@ -51,20 +51,59 @@ const App = () => {
   //const { color, material } = require('./SelectBox');
   const [color, setColor] = useState("");
   const [material, setMaterial] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [maskLoaded, setMaskLoaded] = useState(false);
+  const [data, setData] = useState("")
 
-
-
-
-
+  const handleSelectBoxChangeMaterial = (event) => {
+    setMaterial(event.target.value);
+    console.log(event.target.value)
+  };
+  
+  
+  const SelectBoxMaterial = ({name}) => {
+  
+  
+  return(
+  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+  <InputLabel id="select-small-label">{name}</InputLabel>
+  <Select labelId="select-small-label" id="select-small" label={name} defaultValue={material} onChange={handleSelectBoxChangeMaterial}>
+    <MenuItem value="">
+    <em>None</em>
+    </MenuItem>
+    <MenuItem value={"Leather"}>Leather</MenuItem>
+    <MenuItem value={"Wool"}>Wool</MenuItem>
+    <MenuItem value={"Polyester"}>Polyester</MenuItem>
+  </Select>
+  </FormControl>
+  );
+  };
+  
+  
+  const SelectBoxColor = ({name}) => {
+  
+  
+  return(
+  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+  <InputLabel id="select-small-label">{name}</InputLabel>
+  <Select labelId="select-small-label" id="select-small" label={name} defaultValue={color} onChange={handleSelectBoxChangeBrand}>
+    <MenuItem value="">
+    <em>None</em>
+    </MenuItem>
+    <MenuItem value={"Black"}>Black</MenuItem>
+    <MenuItem value={"White"}>White</MenuItem>
+    <MenuItem value={"Red"}>Red</MenuItem>
+    <MenuItem value={"Yellow"}>Yellow</MenuItem>
+    <MenuItem value={"Blue"}>Blue</MenuItem>
+  </Select>
+  </FormControl>
+  );
+  };
 
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
     console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
   };
-
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [maskLoaded, setMaskLoaded] = useState(false);
-  const [data, setData] = useState("")
 
   const onMaskClick = async () => {
     if (imageofmask != "") {
@@ -110,7 +149,7 @@ const App = () => {
 /////////////////////////////NÄMÄ OMAAN TIEDOSTOON KIIIIIIIIIIIIITOS/////////////////////////////////////////////////
 const handleSelectBoxChangeBrand = (event) => {
   setColor(event.target.value);
-  console.log(event.target.value)
+  console.log("XDD", color)
 };
 
   
@@ -158,53 +197,8 @@ const handleSelectBoxChangeBrand = (event) => {
         },
       });
       setcleanedAnswer(response.data.parsed_answer);
-     } catch (error) {
+    } catch (error) {
       console.error('Error fetching response from Bard:', error);
-const handleSelectBoxChangeMaterial = (event) => {
-  setMaterial(event.target.value);
-  console.log(event.target.value)
-};
-
-
-const SelectBoxMaterial = ({name}) => {
-
-
-return(
-<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-<InputLabel id="select-small-label">{name}</InputLabel>
-<Select labelId="select-small-label" id="select-small" label={name} defaultValue={material} onChange={handleSelectBoxChangeMaterial}>
-  <MenuItem value="">
-  <em>None</em>
-  </MenuItem>
-  <MenuItem value={"Leather"}>Leather</MenuItem>
-  <MenuItem value={"Wool"}>Wool</MenuItem>
-  <MenuItem value={"Polyester"}>Polyester</MenuItem>
-</Select>
-</FormControl>
-);
-};
-
-
-const SelectBoxColor = ({name}) => {
-
-
-return(
-<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-<InputLabel id="select-small-label">{name}</InputLabel>
-<Select labelId="select-small-label" id="select-small" label={name} defaultValue={color} onChange={handleSelectBoxChangeBrand}>
-  <MenuItem value="">
-  <em>None</em>
-  </MenuItem>
-  <MenuItem value={"Black"}>Black</MenuItem>
-  <MenuItem value={"White"}>White</MenuItem>
-  <MenuItem value={"Red"}>Red</MenuItem>
-  <MenuItem value={"Yellow"}>Yellow</MenuItem>
-  <MenuItem value={"Blue"}>Blue</MenuItem>
-</Select>
-</FormControl>
-);
-};
-//////////////////////////////////////////////////////////////////////////////
     }
     setIsLoading(false);
   }
