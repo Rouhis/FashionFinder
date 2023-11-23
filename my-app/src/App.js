@@ -5,6 +5,9 @@ import PreviewPic from './preview_pic.png'
 import axios from 'axios';
 import ListForProducts from './List';
 import {useContext, useEffect} from 'react';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 
@@ -15,6 +18,38 @@ const App = () => {
     const [selectedImage, setSelectedImage] = useState(null); // New state for the image
     const [material, setMaterial] = useState("");
     const [color, setColor] = useState("");
+    
+    const [anchorEl2, setAnchorEl2] = React.useState(null);
+    const open2 = Boolean(anchorEl2);
+
+    const handleClick2 = (event) => {
+      setAnchorEl2(event.currentTarget);
+    };
+    const handleClose2 = () => {
+      setAnchorEl2(null);
+    };
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+
+
+    const setMaterialValue = (value) => {
+  setMaterial(value);
+};
+
+const setColorValue = (value) => {
+  setColor(value);
+};
+  
 
     
 
@@ -87,7 +122,6 @@ const App = () => {
               <h5 className="BoxTitle">Similar Products Information</h5>
             </div>
             <input type="text" placeholder="Enter material" onChange={(e) => setMaterial(e.target.value)} />
-            <input type="text" placeholder="Enter color" onChange={(e) => setColor(e.target.value)} />
             </Box>
         </div>
     <div className="Right">
@@ -102,6 +136,56 @@ const App = () => {
       <div className="ConfirmButtonBox">
             <button className="ConfirmButton" variant="solid">Find Similar Products</button>
         </div>
+
+    <div>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        Dashboard
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      </Menu>
+    </div>
+
+    <div>
+      <Button
+        id="basic-button"
+        aria-controls={open2 ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open2 ? 'true' : undefined}
+        onClick={handleClick2}
+      >
+        color
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl2}
+        open={open2}
+        onClose={handleClose2}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => setColor("brown")}>brown</MenuItem>
+        <MenuItem onClick={() => setColor("yellow")}>yellow</MenuItem>
+        <MenuItem onClick={() => setColor("blue")}>blue</MenuItem>
+      </Menu>
+    </div>
     </div>
   );
   
