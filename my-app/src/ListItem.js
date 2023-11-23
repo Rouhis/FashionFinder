@@ -2,9 +2,9 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 
-function ListItem({mediaArray, material,color}) {
+function ListItem({mediaArray, material,color,price}) {
   //If mediaArray is empty listitem will return null
-  console.log("Väri ja materiaalii LISTITEMISSÄ", material, color)
+  console.log("Väri ja materiaalii LISTITEMISSÄ", material, color,price)
 
   if (!mediaArray || !mediaArray.products) {
         console.log("MediaArray is empty", mediaArray);
@@ -30,7 +30,7 @@ function ListItem({mediaArray, material,color}) {
               Price: {productArray[i].price} €
             </Typography>
             <Typography level="title-md" textColor="inherit">
-              <a href={`https://en.zalando.de/${productArray[i].sex}/_${color}/?q=${productArray[i].specialName}&upper_material=${material}`}>Link</a>
+              <a href={`https://en.zalando.de/${productArray[i].sex}/_${color}/?q=${productArray[i].specialName}&price_to=${price}&upper_material=${material}`}>Link</a>
             </Typography>
           </CardContent>
         </Card>

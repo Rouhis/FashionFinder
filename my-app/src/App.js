@@ -18,7 +18,7 @@ const App = () => {
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the image
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(1000);
   //const { color, material } = require('./SelectBox');
   const [color, setColor] = useState("");
   const [material, setMaterial] = useState("");
@@ -30,7 +30,7 @@ const App = () => {
 
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
-    console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
+    console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color, newPrice)
   };
 
   const handleImageChange = (e) => {
@@ -163,6 +163,7 @@ return(
                 max={1000}
                 min={0}
                 valueLabelDisplay="auto"
+                defaultValue={1000}
                 getAriaValueText={valuetext}
                 onChange={handleSliderChange}
               />
@@ -177,7 +178,7 @@ return(
             <h5 className="BoxTitle">Similar Products Images</h5>
           </div>
           <Box className="InfoBox">
-          <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} />
+          <ListForProducts mediaArray={cleanedAnswer} material={material} color={color} price={price} />
           </Box>
           <div className="ConfirmButtonBox">
             <button

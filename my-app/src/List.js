@@ -2,11 +2,11 @@ import List from "@mui/joy/List";
 import ListItem from "./ListItem";
 import PropTypes from "prop-types";
 
-const ListForProducts = ({ mediaArray, material, color}) => {
+const ListForProducts = ({ mediaArray, material, color, price}) => {
   console.log("mediaArray in List component", mediaArray);
   return (
     <List>
-      <ListItem mediaArray={mediaArray} material={material} color={color}></ListItem>
+      <ListItem mediaArray={mediaArray} material={material} color={color} price={price}></ListItem>
     </List>
   );
 };
