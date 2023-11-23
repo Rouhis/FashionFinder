@@ -1,7 +1,34 @@
+
+@import './colors.css';
+@import url('https://fonts.googleapis.com/css2?family=Mohave:wght@300&family=Playfair+Display&display=swap');
+
+/*Breakpoint for smaller screens */
+@media screen and (max-width: 768px) {
+  .Boxes {
+    flex-direction: column;
+  }
+
+  .Left, .Middle, .Right {
+    height: auto;
+    padding: 10px;
+  }
+
+  .InfoBox, .LoadImageBox {
+    width: 100%;
+    height: auto;
+  }
+
+  .InfoText {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Main Style */
 .App {
-  background-color: #f4dbd8; /* Light Peach */
+  background-image: linear-gradient(to top, #6750a4, #b66691, #d3928e, #dbc3ae, #edede9);  display: flex;
   flex-direction: column;
-  color: #fff;
+  color: var(--text-color);
   min-height: 100vh;
 }
 
@@ -9,43 +36,30 @@
   padding-top: 30px;
   margin: 0;
   text-align: center;
+  font-family: 'Mohave', sans-serif;
+  font-family: 'Playfair Display', serif;
 }
 
 .Boxes {
   display: flex;
   align-items: center;
-  flex-direction: row;
   justify-content: space-evenly;
-  color: #fff;
+  color: var(--text-color);
   padding: 20px;
+
 }
 
-.Left {
+.Left, .Middle, .Right {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   height: 581px;
 }
 
-.Middle {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  height: 581px;
-}
-
-.Right {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  height: 581px;
-
-}
-
-.InfoBox {
+.InfoBox, .LoadImageBox {
   width: 457px;
   height: 581px;
-  background-color: #c09891; /* Dark Salmon */
+  background-color: var(--box-background); /* Box background */
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -53,14 +67,12 @@
 .ConfirmButton {
   width: 100%;
   height: 47px;
-  background-color: #775144; /* Sienna */
+  background-color: var(--button-color); /* Button color */
+  border: 0;
+  border-radius: 10px;
 }
 
-.PreviewBox {
- /* width: 487px;
-  height: 251px;
-*/  background-color: #2a0800; /* Very Dark Brown */
-}
+
 
 .InfoText {
   font-size: 14px;
@@ -68,15 +80,36 @@
   font-weight: 700;
   padding: 30px 21px 43px 26px;
   width: 410px;
-  height: 477px;
+  height: 420px;
   margin: 0;
 }
 
 .HeaderBox {
   width: 100%;
   height: 31px;
-  background-color: #bea8a7; /* Dusty Rose */
+  background-color: var(--headerbox-color); /*  Header color */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
+
+
+.OptionBox{
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-align-content: flex-start;
+  align-content: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  background-color: var(--headerbox-color); /* OptionBox color */
+  width: 100%;
+  }
+
 
 .BoxTitle {
   margin: 0;
@@ -90,29 +123,13 @@
   padding: 7px 0 4px 10px;
 }
 
-
 .ConfirmButtonBox {
-width: 100%;
-padding-top: 7px;
-padding-bottom: 7px;
-  
-}
-
-.LoadImageBox {
-/*  width: 457px;
-  height: 263px;
-  */
-  height: 270px;
   width: 100%;
-  background-color: #c09891; /* Dark Salmon */
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
-.LoadImageBox img {
-  width: 100%;
-  height: 235px;
-}
-
-.PreviewBox img {
+.LoadImageBox img, .PreviewBox img, .Card img {
   width: 100%;
   height: 235px;
 }
@@ -126,6 +143,7 @@ padding-bottom: 7px;
   height: 205px;
   border-radius: 15px;
 }
+
 
 .CardInfo {
   flex-direction: column;

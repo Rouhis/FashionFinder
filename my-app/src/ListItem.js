@@ -17,7 +17,7 @@ function ListItem({ mediaArray }) {
     console.log("Single item in mediaArray ", mediaArray.products[i]);
     cardElements.push(
       <div className="Card" key={i}>
-        <Card orientation="horizontal" className="CardInfo" variant="solid">
+        <Card orientation="horizontal" className="CardInfo" variant="outlined" color="neutral">
           <CardContent>
             <Typography level="title-md" textColor="inherit">
               Name: {productArray[i].name}
