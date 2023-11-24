@@ -297,13 +297,6 @@ const handleSelectBoxChangeBrand = (event) => {
   ///////////////////////// Ladattu kuva näkyviin////////////////////////////
   //    <img src={ URL.createObjectURL(selectedImage)} alt="Logo"></img>
 
-  useEffect(() => {
-    const timeStamp = new Date().getTime()
-      const img = new Image()
-      img.src = `../assets/data/mask.png?t=${timeStamp}`
-      setMaskedImg(img)
-  }, [maskedImg])
-
   return (
     <div className="App">
       <h1 className="title">Fashion Finder</h1>
