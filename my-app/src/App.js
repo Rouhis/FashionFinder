@@ -11,6 +11,7 @@ import { onnxMaskToImage } from "./components/helpers/maskUtils"
 import { modelData } from "./components/helpers/onnxModelAPI"
 import Stage from "./components/Stage"
 import AppContext from "./components/hooks/createContext"
+import ImagePathToFile from "./components/helpers/ImagePathToFile"
 import Button from '@mui/joy/Button';
 import { Box } from '@mui/system';
 import Slider from "@mui/material/Slider";
@@ -120,7 +121,7 @@ const App = () => {
       }
       const timeStamp = new Date().getTime()
       const img = new Image()
-      img.src = `../assets/data/mask.png?t=${timeStamp}`
+      img.src = `./assets/data/mask.png?t=${timeStamp}`
       setMaskedImg(img)
       setMaskLoaded(true)
     } else {
@@ -188,9 +189,15 @@ const handleSelectBoxChangeBrand = (event) => {
 
   const handleAskBard = async () => {
     setIsLoading(true);
+    let image = selectedImage
 
     const formData = new FormData();
-    formData.append('image', selectedImage); // Append the image to the FormData object
+    let newFIle = await ImagePathToFile("./assets/data/mask.png", "mask.png").then((file) => {
+      console.log(file)
+      image = file
+    })
+    console.log(newFIle)
+    formData.append('image', image); // Append the image to the FormData object
     formData.append('question', "Find me products similiar to this from zalando and return answer in json{products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]}dont add anything after json");
 
     try {
