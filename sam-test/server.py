@@ -1,4 +1,4 @@
-from flask import Flask, request ,jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import os
 import sys
@@ -9,20 +9,34 @@ from segment_anything import sam_model_registry, SamPredictor
 from PIL import Image
 from bardapi import Bard
 import io
+import queue
 import json
 
-sys.path.insert(1, '../sam-test')
+mask_path = "../my-app/src/assets/data/mask.png"
+if os.path.exists(mask_path):
+    os.remove(mask_path)
+else:
+    print("There isn't a mask to delete")
 
-import get_mask
-
+    
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/mask/<x_value>/<y_value>")
-def mask(x_value=0, y_value=0):
-    subprocess.Popen(["python", "get_mask.py", x_value, y_value])
-    return ":DD"
 
+@app.route("/mask/<x_value>/<y_value>")
+# Launch get_mask.py as a child process, decode the output to string format and return it as json
+def mask(x_value=0, y_value=0):
+    # Run get_mask.py as a child process using subprocess.check_output. 
+    # Waits for the script to finish running and returns it's output, in this case it returns what is printed inside the script.
+    # This function doesn't care about what get_mask.py is returing, subprocess.check_output is only used to run this function asynchronously.
+    # By doing it this way, the function will only return something after the get_mask.py has been run.
+    output = subprocess.check_output(["python", "get_mask.py", x_value, y_value])
+
+    # Since the subprocess.check_output() function returns the value as bytes object, the value needs to be decoded into a string.
+    output_string = output.decode("utf-8")
+
+    # Finally return what the get_mask.py printed as json
+    return jsonify(output_string)
 
 @app.route("/createnpy", methods=["POST", "GET"])
 def process():

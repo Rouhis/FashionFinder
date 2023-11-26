@@ -102,23 +102,20 @@ const App = () => {
 
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
-    console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
+    // console.log("Väri ja materiaali apppjksjsjssjsjsj", material, color)
   };
 
   const onMaskClick = async () => {
     if (imageofmask != "") {
       try {
-        test = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`).then(
-          res => res.json()
-        ).then(
-          data => {
-            setData(data)
-            console.log(":DDDD", data)
-          }
-        )
+        const fetched_value = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`)
+        const data = await fetched_value.json();
+        console.log("fetched value", fetched_value)
+        console.log("fetched value in json", data)
       } catch (e) {
         console.log("Server is not on", e)
       }
+      console.log("Testing testing")
       const timeStamp = new Date().getTime()
       const img = new Image()
       img.src = `./assets/data/mask.png?t=${timeStamp}`
@@ -143,7 +140,7 @@ const App = () => {
         'Content-Type': 'multipart/form-data', // Important header for files
       },
     })
-    console.log(":DDDDDDDDDDDDDD", backendres)
+    //console.log(":DDDDDDDDDDDDDD", backendres)
     setData(backendres)
     setImageLoaded(true);
     setIsLoading(false);
@@ -183,8 +180,8 @@ const handleSelectBoxChangeBrand = (event) => {
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
-    console.log('Cleaned Answer :', cleanedAnswer);
-    console.log("setted image state: ", selectedImage)
+    //console.log('Cleaned Answer :', cleanedAnswer);
+    //console.log("setted image state: ", selectedImage)
   }, [cleanedAnswer,".assets/data/mask.png"]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {

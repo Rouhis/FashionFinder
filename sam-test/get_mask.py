@@ -45,13 +45,13 @@ if __name__ == "__main__":
             multimask_output=True,
         )
         generated_mask = masks[0]
-        print(generated_mask)
+        #print(generated_mask)
         # Mask is saved in COCO RLE format. More info here: (https://github.com/facebookresearch/segment-anything#dataset).
         # All the False values in the mask are converted to white pixels, so only the masked part of the image remains with a white background.
         image[generated_mask==False] = [255,255,255]
 
         # Convert the mask from a numpy.ndarray to image using PIL's Image module.
-        print(type(image))
+        #print(type(image))
         img_from_array = im.fromarray(image)
 
         # Convert the image to RGBA fomat get the data of the image.
@@ -70,6 +70,7 @@ if __name__ == "__main__":
         
         # Change the size of the image to a smaller one. 
         img.save(saved_mask_path, "PNG")
+        return ":D"
 
     # Check if the parameters were given properly, if so use the given parameters for the get_mask function.
     # If the parameters weren't passed properly, call the get_mask function with default values.
