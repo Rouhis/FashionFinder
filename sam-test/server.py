@@ -26,15 +26,16 @@ CORS(app)
 @app.route("/mask/<x_value>/<y_value>")
 # Launch get_mask.py as a child process, decode the output to string format and return it as json
 def mask(x_value=0, y_value=0):
+    print("first")
     # Run get_mask.py as a child process using subprocess.check_output. 
     # Waits for the script to finish running and returns it's output, in this case it returns what is printed inside the script.
     # This function doesn't care about what get_mask.py is returing, subprocess.check_output is only used to run this function asynchronously.
     # By doing it this way, the function will only return something after the get_mask.py has been run.
     output = subprocess.check_output(["python", "get_mask.py", x_value, y_value])
-
+    print("second")
     # Since the subprocess.check_output() function returns the value as bytes object, the value needs to be decoded into a string.
     output_string = output.decode("utf-8")
-
+    print("third")
     # Finally return what the get_mask.py printed as json
     return jsonify(output_string)
 

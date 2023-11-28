@@ -6,15 +6,15 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import AppContext from "./hooks/createContext";
-import { ToolProps } from "./helpers/Interfaces";
+import { ToolProps, modelInputProps } from "./helpers/Interfaces";
 import * as _ from "underscore";
-import { test } from "../App"
 
 const Tool = ({ handleMouseMove }: ToolProps) => {
   const {
     clicks: [clicks],
     image: [image],
     maskImg: [maskImg, setMaskImg],
+    maskedImg: [, setMaskedImg],
   } = useContext(AppContext)!;
 
   // Determine if we should shrink or grow the images to match the
@@ -46,6 +46,24 @@ const Tool = ({ handleMouseMove }: ToolProps) => {
   const imageClasses = "";
   const maskImageClasses = `absolute opacity-40 pointer-events-none`;
 
+  const onMaskClick = async (click: modelInputProps[]) => {
+    console.log("clicks:", click[0])
+    const xcoord = click[0].x
+    const ycoord = click[0].y
+    try {
+      const fetched_value = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`)
+      const data = await fetched_value.json();
+      console.log("fetched value", fetched_value)
+      console.log("fetched value in json", data)
+    } catch (e) {
+      console.log("Server error:", e)
+    }
+    const timeStamp = new Date().getTime()
+    const img = new Image()
+    img.src = `./assets/data/mask.png?t=${timeStamp}`
+    setMaskedImg(img)
+  }
+
   // Render the image and the predicted mask image on top
   return (
     <>
@@ -55,18 +73,16 @@ const Tool = ({ handleMouseMove }: ToolProps) => {
           onMouseOut={() => _.defer(() => setMaskImg(null))}
           onTouchStart={handleMouseMove}
           src={image.src}
-          className={`${
-            shouldFitToWidth ? "w-full" : "h-full"
-          } ${imageClasses}`}
-          onClick={() => test(maskImg, clicks)}
+          className={`${shouldFitToWidth ? "w-full" : "h-full"
+            } ${imageClasses}`}
+          onClick={() => onMaskClick(clicks)}
         ></img>
       )}
       {maskImg && (
         <img
           src={maskImg.src}
-          className={`${
-            shouldFitToWidth ? "w-full" : "h-full"
-          } ${maskImageClasses}`}
+          className={`${shouldFitToWidth ? "w-full" : "h-full"
+            } ${maskImageClasses}`}
         ></img>
       )}
     </>
