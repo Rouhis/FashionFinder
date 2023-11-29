@@ -30,19 +30,9 @@ const ort = require("onnxruntime-web");
 import npyjs from "npyjs";
 
 // Define image, embedding and model paths
-const IMAGE_PATH = "/assets/data/naulakko.jpg";
-const IMAGE_EMBEDDING = "/assets/data/processed.npy";
-const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx";
-let imageofmask = "";
-let xcoord = 0;
-let ycoord = 0;
-
-export const test = async (testing, click) => {
-  console.log("clicks:", click[0]);
-  imageofmask = testing.src;
-  xcoord = click[0].x;
-  ycoord = click[0].y;
-};
+const IMAGE_PATH = "/assets/data/naulakko.jpg"
+const IMAGE_EMBEDDING = "/assets/data/processed.npy"
+const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
 
 const App = () => {
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
@@ -68,25 +58,23 @@ const App = () => {
   const onMaskClick = async () => {
     if (imageofmask != "") {
       try {
-        const fetched_value = await fetch(
-          `http://localhost:5000/mask/${xcoord}/${ycoord}`
-        );
+        const fetched_value = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`)
         const data = await fetched_value.json();
-        console.log("fetched value", fetched_value);
-        console.log("fetched value in json", data);
+        console.log("fetched value", fetched_value)
+        console.log("fetched value in json", data)
       } catch (e) {
-        console.log("Server is not on", e);
+        console.log("Server is not on", e)
       }
-      console.log("Testing testing");
-      const timeStamp = new Date().getTime();
-      const img = new Image();
-      img.src = `./assets/data/mask.png?t=${timeStamp}`;
-      setMaskedImg(img);
-      setMaskLoaded(true);
+      console.log("Testing testing")
+      const timeStamp = new Date().getTime()
+      const img = new Image()
+      img.src = `./assets/data/mask.png?t=${timeStamp}`
+      setMaskedImg(img)
+      setMaskLoaded(true)
     } else {
-      console.log("Mask wasn't clicked");
+      console.log("Mask wasn't clicked")
     }
-  };
+  }
 
   const handleImageChange = async (event) => {
     setIsLoading(true);
@@ -131,11 +119,11 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
-    onMaskClick();
-  }, [imageofmask]);
+    onMaskClick()
+  }, [imageofmask])
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
@@ -318,10 +306,7 @@ const App = () => {
             </Box>
           </div>
           <Box className="InfoBox">
-            <img
-              src={maskLoaded ? maskedImg.src : undefined}
-              alt="Image of a mask"
-            ></img>
+            <img src={maskedImg ? maskedImg.src : undefined} alt="Image of a mask"></img>
           </Box>
         </div>
         <div className="Right">
