@@ -68,7 +68,8 @@ def askBard():
     formdata = request.files["image"]
     question = request.form["question"]
     imagebytes = formdata.read()
-    bard_client = Bard(token='') 
+    # Bard Token
+    bard_client = Bard(token='dwh418eMFseWXJ_ikxIaFHRmVpLcxzpOpC1Till5oynE00auQet4Z_CPrXt84gWcXkYkvA.')
     response = bard_client.ask_about_image(question, imagebytes)
     # Assuming the response contains a JSON with the needed data
     content = response.get('content')
