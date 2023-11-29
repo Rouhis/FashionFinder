@@ -121,9 +121,6 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    onMaskClick()
-  }, [imageofmask])
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
