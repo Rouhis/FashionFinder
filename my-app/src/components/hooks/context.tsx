@@ -15,6 +15,8 @@ const AppContextProvider = (props: {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [maskImg, setMaskImg] = useState<HTMLImageElement | null>(null);
   const [maskedImg, setMaskedImg] = useState<HTMLImageElement | null>(null);
+  const [material, setMaterial] = useState<String | null>(null)
+  const [color, setColor] = useState<String | null>(null)
 
   return (
     <AppContext.Provider
@@ -23,6 +25,8 @@ const AppContextProvider = (props: {
         image: [image, setImage],
         maskImg: [maskImg, setMaskImg],
         maskedImg: [maskedImg, setMaskedImg],
+        material: [material, setMaterial],
+        color: [color, setColor]
       }}
     >
       {props.children}

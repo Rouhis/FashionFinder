@@ -24,6 +24,14 @@ interface contextProps {
     maskedImg: HTMLImageElement | null,
     setMaskedImg: (e: HTMLImageElement | null) => void
   ];
+  material: [
+    material: String | null,
+    setMaterial: (e: String | null)=> void
+  ]
+  color: [
+    color: String | null,
+    setColor: (e: String | null)=> void
+  ]
 }
 
 const AppContext = createContext<contextProps | null>(null);

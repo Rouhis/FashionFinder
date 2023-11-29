@@ -33,8 +33,8 @@
 }
 
 .title {
-  padding-top: 30px;
-  margin: 0;
+  padding-top: 30px;  
+  font-size: 45px;
   text-align: center;
   font-family: 'Mohave', sans-serif;
   font-family: 'Playfair Display', serif;
@@ -68,10 +68,12 @@
   width: 100%;
   height: 47px;
   background-color: var(--button-color); /* Button color */
-  border: 0;
   border-radius: 10px;
 }
 
+.disclaimer {
+  font-size: 12px;
+}
 
 
 .InfoText {
