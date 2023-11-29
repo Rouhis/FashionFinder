@@ -55,26 +55,6 @@ const App = () => {
     setPrice(newPrice);
   };
 
-  const onMaskClick = async () => {
-    if (imageofmask != "") {
-      try {
-        const fetched_value = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`)
-        const data = await fetched_value.json();
-        console.log("fetched value", fetched_value)
-        console.log("fetched value in json", data)
-      } catch (e) {
-        console.log("Server is not on", e)
-      }
-      console.log("Testing testing")
-      const timeStamp = new Date().getTime()
-      const img = new Image()
-      img.src = `./assets/data/mask.png?t=${timeStamp}`
-      setMaskedImg(img)
-      setMaskLoaded(true)
-    } else {
-      console.log("Mask wasn't clicked")
-    }
-  }
 
   const handleImageChange = async (event) => {
     setIsLoading(true);
