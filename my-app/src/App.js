@@ -325,7 +325,7 @@ const App = () => {
             >
               Make search again
             </button>
-            <button onClick={testColorMaterial}>testits</button>
+            <button onClick={testColorMaterial}>Test states</button>
           </div>
         </div>
       </div>
