@@ -124,12 +124,12 @@ const App = () => {
     formData.append("image", image); // Append the image to the FormData object
     formData.append(
       "question",
-      "Find me products similiar to this from zalando and return answer in json{products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]}dont add anything after json"
+      "Find me products similiar to this from any place and return answer in json format {products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]} dont add anything after json"
     );
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/askbard",
+        "http://localhost:5000/askgbt",
         formData,
         {
           headers: {
@@ -137,9 +137,11 @@ const App = () => {
           },
         }
       );
-      setcleanedAnswer(response.data.parsed_answer);
+      console.log(":DD"+ response)
+      console.log(response.data)
+      setcleanedAnswer(response.data);
     } catch (error) {
-      console.error("Error fetching response from Bard:", error);
+      console.error("Error fetching response from Gbt:", error);
     }
     setIsLoading(false);
   };
