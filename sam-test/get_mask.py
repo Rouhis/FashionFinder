@@ -45,6 +45,12 @@ if __name__ == "__main__":
             multimask_output=True,
         )
         generated_mask = masks[0]
+        max_score = 0
+        # Go through all the masks and their scores and select the mask that has the highest score (higher score = more accurate mask)
+        for i, (mask, score) in enumerate(zip(masks, scores)):
+            if score > max_score:
+                max_score = score
+                generated_mask = masks[i]
         #print(generated_mask)
         # Mask is saved in COCO RLE format. More info here: (https://github.com/facebookresearch/segment-anything#dataset).
         # All the False values in the mask are converted to white pixels, so only the masked part of the image remains with a white background.
