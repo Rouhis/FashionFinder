@@ -5,7 +5,6 @@
 // LICENSE file in the root directory of this source tree.
 import "./App.css";
 import "./assets/scss/App.scss";
-//import {SelectBoxMaterial, SelectBoxColor} from "./SelectBox";
 import { handleImageScale } from "./components/helpers/scaleHelper";
 import { onnxMaskToImage } from "./components/helpers/maskUtils";
 import { modelData } from "./components/helpers/onnxModelAPI";
@@ -14,27 +13,23 @@ import AppContext from "./components/hooks/createContext";
 import ImagePathToFile from "./components/helpers/ImagePathToFile";
 import { Box } from "@mui/system";
 import Slider from "@mui/material/Slider";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import ListForProducts from "./List";
 import { InferenceSession } from "onnxruntime-web";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import Lottie from "lottie-react";
-import loading from "./assets/data/loading.json"
-import pigeon from "./assets/data/pigeon.json"
+import loading from "./assets/data/loading.json";
+import pigeon from "./assets/data/pigeon.json";
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
-import AppContextProvider from "./components/hooks/context";
-const ort = require("onnxruntime-web");
-
 /* @ts-ignore */
 import npyjs from "npyjs";
+
+const ort = require("onnxruntime-web");
+
 // Define image, embedding and model paths
-const IMAGE_PATH = "/assets/data/naulakko.jpg"
-const IMAGE_EMBEDDING = "/assets/data/processed.npy"
-const MODEL_DIR = "./assets/sam_onnx_quantized_example.onnx"
+const IMAGE_PATH = "/assets/data/naulakko.jpg";
+const IMAGE_EMBEDDING = "/assets/data/processed.npy";
+const MODEL_DIR = "./assets/sam_onnx_quantized_example.onnx";
 
 const App = () => {
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
@@ -46,18 +41,10 @@ const App = () => {
   const [data, setData] = useState("");
   const [lottieState, setLottieState] = useState(false);
 
-
-  //Test to se Color and Material State values
-  const testColorMaterial = () => {
-    console.log("väri ja materiaali on statessa: ", material, color);
-  };
-
-
   //Set Price State value
   const handleSliderChange = (event, newPrice) => {
     setPrice(newPrice);
   };
-
 
   const handleImageChange = async (event) => {
     setLottieState(true);
@@ -104,8 +91,7 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   //Test logs to see that states have updated correctly
   useEffect(() => {
@@ -142,8 +128,8 @@ const App = () => {
           },
         }
       );
-      console.log(":DD"+ response)
-      console.log(response.data)
+      console.log(":DD" + response);
+      console.log(response.data);
       setcleanedAnswer(response.data);
     } catch (error) {
       console.error("Error fetching response from Gbt:", error);
@@ -157,7 +143,7 @@ const App = () => {
     maskImg: [, setMaskImg],
     maskedImg: [maskedImg, setMaskedImg],
     material: [material, setMaterial],
-    color: [color, setColor]
+    color: [color, setColor],
   } = useContext(AppContext);
   const [model, setModel] = useState(null); // ONNX model
   const [tensor, setTensor] = useState(null); // Image embedding tensor
@@ -244,13 +230,16 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="TitleHeader">
+        <img src="./assets/data/logo192.png" style={{width: 100}}></img>
       <h1 className="title">Fashion Finder</h1>
+      </div>
       <div className="Boxes">
         <div className="Left">
           <div className="HeaderBox">
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="InfoBox">
+          <Box className="LoadImageBox">
             <input
               type="file"
               onChange={handleImageChange}
@@ -259,15 +248,6 @@ const App = () => {
             {lottieState && <Lottie animationData={loading} loop={true} />}
             {imageLoaded && <Stage />}
           </Box>
-          <div className="ConfirmButtonBox">
-            <button
-              className="ConfirmButton"
-              onClick={handleAskBard}
-              disabled={isLoading || !selectedImage}
-            >
-              Confirm Selection
-            </button>
-          </div>
         </div>
         <div className="Middle">
           <div className="HeaderBox">
@@ -291,7 +271,22 @@ const App = () => {
             </Box>
           </div>
           <Box className="InfoBox">
-            {maskedImg ? <img src={maskedImg ? maskedImg.src : undefined} alt="Image of a mask"></img> : <Lottie animationData={pigeon} loop={true} size={20} />}
+            {maskedImg ? (
+              <img
+                src={maskedImg ? maskedImg.src : undefined}
+                alt="Image of a mask"
+              ></img>
+            ) : (
+              <div>
+                {" "}
+                <Lottie
+                  animationData={pigeon}
+                  loop={true}
+                  style={{ height: 200 }}
+                />{" "}
+                <p style={{ textAlign: "center" }}>No mask selected</p>{" "}
+              </div>
+            )}
           </Box>
         </div>
         <div className="Right">
@@ -313,7 +308,6 @@ const App = () => {
             >
               Make search again
             </button>
-            <button onClick={testColorMaterial}>Test states</button>
           </div>
         </div>
       </div>
