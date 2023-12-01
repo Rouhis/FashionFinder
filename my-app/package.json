@@ -52,15 +52,16 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
+    "lottie-react": "^2.4.0",
     "npyjs": "^0.4.0",
     "onnxruntime-web": "^1.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "underscore": "^1.13.6",
+    "react-native": "^0.72.7",
     "react-refresh": "^0.14.0",
-    "react-native": "^0.72.7"
+    "react-scripts": "5.0.1",
+    "underscore": "^1.13.6",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "build": "yarn run clean-dist && webpack --config=configs/webpack/prod.js && mv dist/*.wasm dist/js",

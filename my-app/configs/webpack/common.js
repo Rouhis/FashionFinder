@@ -64,10 +64,6 @@ module.exports = {
           to: "[name][ext]",
         },
         {
-          from: "model",
-          to: "model",
-        },
-        {
           from: "src/assets",
           to: "assets",
         },

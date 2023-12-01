@@ -21,6 +21,8 @@ import InputLabel from "@mui/material/InputLabel";
 import ListForProducts from "./List";
 import { InferenceSession } from "onnxruntime-web";
 import React, { useContext, useEffect, useState, useCallback } from "react";
+import Lottie from "lottie-react";
+import loading from "./assets/data/loading.json"
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
 import AppContextProvider from "./components/hooks/context";
@@ -28,20 +30,20 @@ const ort = require("onnxruntime-web");
 
 /* @ts-ignore */
 import npyjs from "npyjs";
-
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
 const IMAGE_EMBEDDING = "/assets/data/processed.npy"
-const MODEL_DIR = "/assets/sam_onnx_quantized_example.onnx"
+const MODEL_DIR = "./assets/sam_onnx_quantized_example.onnx"
 
 const App = () => {
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the image
   const [price, setPrice] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(null);
   const [maskLoaded, setMaskLoaded] = useState(false);
   const [data, setData] = useState("");
+  const [lottieState, setLottieState] = useState(false);
 
 
   //Test to se Color and Material State values
@@ -57,6 +59,7 @@ const App = () => {
 
 
   const handleImageChange = async (event) => {
+    setLottieState(true);
     setIsLoading(true);
     const imgFormData = new FormData();
     const file = event.target.files[0];
@@ -79,6 +82,7 @@ const App = () => {
     setIsLoading(false);
     setSelectedImage(file);
     loadImage(imageUrl); // Call loadImage with the new image URL
+    setLottieState(false);
   };
 
   const loadImage = async (url) => {
@@ -249,6 +253,7 @@ const App = () => {
               onChange={handleImageChange}
               disabled={isLoading}
             />
+            {lottieState && <Lottie animationData={loading} loop={true} />}
             {imageLoaded && <Stage />}
           </Box>
           <div className="ConfirmButtonBox">
