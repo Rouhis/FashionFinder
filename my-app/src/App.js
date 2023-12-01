@@ -23,6 +23,7 @@ import { InferenceSession } from "onnxruntime-web";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import Lottie from "lottie-react";
 import loading from "./assets/data/loading.json"
+import pigeon from "./assets/data/pigeon.json"
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
 import AppContextProvider from "./components/hooks/context";
@@ -290,7 +291,7 @@ const App = () => {
             </Box>
           </div>
           <Box className="InfoBox">
-            <img src={maskedImg ? maskedImg.src : undefined} alt="Image of a mask"></img>
+            {maskedImg ? <img src={maskedImg ? maskedImg.src : undefined} alt="Image of a mask"></img> : <Lottie animationData={pigeon} loop={true} size={20} />}
           </Box>
         </div>
         <div className="Right">
