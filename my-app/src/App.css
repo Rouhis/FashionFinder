@@ -75,6 +75,9 @@
 }
 
 .LoadImageBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 457px;
   height: 581px;
   background-color: var(--box-background); /* Box background */
