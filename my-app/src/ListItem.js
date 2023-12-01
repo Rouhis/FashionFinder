@@ -15,7 +15,6 @@ function ListItem({mediaArray, material,color}) {
   const productArray = mediaArray;
   const cardElements = [];
 
-  console.log("vitun vitun vittu"+productArray)
   for (let i = 0; i < productArray.length; i++) {
   //  console.log("Single item in mediaArray ", mediaArray.products[i], ":DDD", material, color);
     cardElements.push(

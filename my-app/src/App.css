@@ -78,6 +78,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 457px;
   height: 581px;
   background-color: var(--box-background); /* Box background */
@@ -130,6 +131,7 @@
   align-content: flex-start;
   -webkit-align-items: flex-start;
   align-items: flex-start;
+  gap: 5px;
   background-color: var(--headerbox-color); /* OptionBox color */
   width: 100%;
   }

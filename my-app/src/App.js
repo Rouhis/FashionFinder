@@ -19,6 +19,8 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import Lottie from "lottie-react";
 import loading from "./assets/data/loading.json";
 import pigeon from "./assets/data/pigeon.json";
+import upload from "./assets/data/upload.json";
+//import {loading, pigeon, upload} from "./assets/data/";
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
 /* @ts-ignore */
@@ -240,13 +242,15 @@ const App = () => {
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
           <Box className="LoadImageBox">
+
+            {lottieState && <Lottie animationData={loading} loop={true} />}
+            {imageLoaded && <Stage />}
+            {!imageLoaded && <Lottie animationData={upload} loop={true}/>}
             <input
               type="file"
               onChange={handleImageChange}
               disabled={isLoading}
             />
-            {lottieState && <Lottie animationData={loading} loop={true} />}
-            {imageLoaded && <Stage />}
           </Box>
         </div>
         <div className="Middle">
@@ -312,7 +316,7 @@ const App = () => {
         </div>
       </div>
       <div className="ConfirmButtonBox">
-        <button className="ConfirmButton" variant="solid" onClick={printvalue}>
+        <button className="ConfirmButton" variant="solid" onClick={handleAskBard} disabled={isLoading || !selectedImage}>
           Find Similar Products
         </button>
       </div>

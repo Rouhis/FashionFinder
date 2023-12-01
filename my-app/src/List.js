@@ -14,8 +14,8 @@ const ListForProducts = ({ mediaArray, material, color}) => {
 
 ListForProducts.propTypes = {
   mediaArray: PropTypes.array.isRequired,
-  material: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired
+  material: PropTypes.string,
+  color: PropTypes.string
 };
 
 export default ListForProducts;
