@@ -93,7 +93,7 @@ def askBard():
 
 @app.route("/askgbt", methods=["POST"])
 def askBard():
-    api_key = "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"
+    api_key = "lmao no api key :d"
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
     formdata = request.files["image"]
