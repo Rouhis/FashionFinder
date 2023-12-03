@@ -8,6 +8,11 @@ import React, { useState } from "react";
 import { modelInputProps } from "../helpers/Interfaces";
 import AppContext from "./createContext";
 
+/**
+ * App context with global state variables. Global variables can only be used in this element's children
+ * @param props Global state variables
+ * @returns App context with state variables
+ */
 const AppContextProvider = (props: {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }) => {

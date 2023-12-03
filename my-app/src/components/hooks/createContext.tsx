@@ -7,6 +7,9 @@
 import { createContext } from "react";
 import { modelInputProps } from "../helpers/Interfaces";
 
+/**
+ * All the state variable that we want to use globally through the app context
+ */
 interface contextProps {
   clicks: [
     clicks: modelInputProps[] | null,
@@ -34,6 +37,9 @@ interface contextProps {
   ]
 }
 
+/**
+ * App context with the state variables as contextProps
+ */
 const AppContext = createContext<contextProps | null>(null);
 
 export default AppContext;

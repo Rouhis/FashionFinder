@@ -28,12 +28,12 @@ import npyjs from "npyjs";
 
 const ort = require("onnxruntime-web");
 
-// Define image, embedding and model paths
-const IMAGE_PATH = "/assets/data/naulakko.jpg";
+// Define embedded image and model paths
 const IMAGE_EMBEDDING = "/assets/data/processed.npy";
 const MODEL_DIR = "./assets/sam_onnx_quantized_example.onnx";
 
 const App = () => {
+  // Create state variables that aren't used through the app context
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // New state for the image
@@ -49,15 +49,22 @@ const App = () => {
   };
 
   const handleImageChange = async (event) => {
-    setLottieState(true);
+    setLottieState(true); // Show a loading lottie when user selects a file to upload
     setIsLoading(true);
-    const imgFormData = new FormData();
+    const imgFormData = new FormData(); // Creates new formdata element
     const file = event.target.files[0];
     // Perform file validation and read the file if necessary
 
     // After the file is read and is ready to be shown on the preview
     const imageUrl = URL.createObjectURL(file);
-    imgFormData.append("image", file);
+    imgFormData.append("image", file); // Append the selected image/file to the formdata with the name: "image" and value: selected file
+    /**
+     * Send a fetch request to the python server's createnpy endpoint using axios.post.
+     * parameters for axios.post:
+     * @param {URL} "http://localhost:5000/createnpy" URL for the backend endpoint
+     * @param {data} imgFormData FormData, that has the image file with name "image"
+     * @param {headers} headers When sending FormData, it's important to include the headers in the request
+     */
     const backendres = await axios.post(
       "http://localhost:5000/createnpy",
       imgFormData,
@@ -72,7 +79,7 @@ const App = () => {
     setIsLoading(false);
     setSelectedImage(file);
     loadImage(imageUrl); // Call loadImage with the new image URL
-    setLottieState(false);
+    setLottieState(false); // Hides the loading lottie when the image is showing on the screen
   };
 
   const loadImage = async (url) => {
@@ -139,6 +146,7 @@ const App = () => {
     setIsLoading(false);
   };
 
+  // Create state variables used through the app context
   const {
     clicks: [clicks],
     image: [, setImage],
@@ -242,7 +250,11 @@ const App = () => {
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
           <Box className="LoadImageBox">
-
+            {/** 
+             * Show lottie when the lottieState is true (when use uploads an image and is waiting for it to show on the screen) 
+             * Show the uploaded image that lets the user hover over it and preview masks. (Tool custom component has the mask preview functionality which is inside the stage component)
+             * Show a lottie when there's no uploaded image displayed.
+            */}
             {lottieState && <Lottie animationData={loading} loop={true} />}
             {imageLoaded && <Stage />}
             {!imageLoaded && <Lottie animationData={upload} loop={true}/>}

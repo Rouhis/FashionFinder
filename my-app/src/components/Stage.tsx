@@ -10,6 +10,10 @@ import Tool from "./Tool";
 import { modelInputProps } from "./helpers/Interfaces";
 import AppContext from "./hooks/createContext";
 
+/**
+ * Custom component for getting the user's cursor's placement as x and y coordinates
+ * @returns {Stage} returns a custom component.
+ */
 const Stage = () => {
   const {
     clicks: [, setClicks],
@@ -21,9 +25,11 @@ const Stage = () => {
     return { x, y, clickType };
   };
 
-  // Get mouse position and scale the (x, y) coordinates back to the natural
-  // scale of the image. Update the state of clicks with setClicks to trigger
-  // the ONNX model to run and generate a new mask via a useEffect in App.tsx
+  /** 
+   * Get mouse position and scale the (x, y) coordinates back to the natural
+   * scale of the image. Update the state of clicks with setClicks to trigger
+   * the ONNX model to run and generate a new mask via a useEffect in App.tsx
+   */
   const handleMouseMove = _.throttle((e: any) => {
     let el = e.nativeEvent.target;
     const rect = el.getBoundingClientRect();

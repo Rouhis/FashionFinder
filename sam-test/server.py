@@ -16,51 +16,49 @@ import base64
 import re
 from io import BytesIO
 
-mask_path = "../my-app/src/assets/data/mask.png"
-if os.path.exists(mask_path):
-   os.remove(mask_path)
-else:
-    print("There isn't a mask to delete")
-
-    
+# Define app and use Cors with default arguments. Cors is now allowed for all domains on all routes
 app = Flask(__name__)
 CORS(app)
 
 
+# Route for creating a mask when user clicks a mask preview on the image
+# Takes x_value and y_value as arguments and passes them to get_mask.py script. X and Y are the coordinates for where the user clicks
 @app.route("/mask/<x_value>/<y_value>")
 # Launch get_mask.py as a child process, decode the output to string format and return it as json
 def mask(x_value=0, y_value=0):
-    print("first")
+    print("Masking started")
     # Run get_mask.py as a child process using subprocess.check_output. 
     # Waits for the script to finish running and returns it's output, in this case it returns what is printed inside the script.
     # This function doesn't care about what get_mask.py is returing, subprocess.check_output is only used to run this function asynchronously.
     # By doing it this way, the function will only return something after the get_mask.py has been run.
     output = subprocess.check_output(["python", "get_mask.py", x_value, y_value])
-    print("second")
-    # Since the subprocess.check_output() function returns the value as bytes object, the value needs to be decoded into a string.
-    output_string = output.decode("utf-8")
-    print("third")
-    # Finally return what the get_mask.py printed as json
-    return jsonify(output_string)
+    output_string = output.decode("utf-8") # Since the subprocess.check_output() function returns the value as bytes object, the value needs to be decoded into a string.
+    print("Masking ended")
+    return jsonify(output_string) # Return what the get_mask.py printed as json
 
+# Route for creating an npy file of the image the user uploads on the website
+# This npy file is required for SAM to create the blue masks on top of the selected image, when the user hovers their cursor over the image
 @app.route("/createnpy", methods=["POST", "GET"])
 def process():
-    uploaded_path = "../my-app/src/assets/data/temp.png"
+    uploaded_path = "../my-app/src/assets/data/temp.png" # Define the path to where the npy file will be saved
+     # Get the image file from the request using the appended "image" name. 
+     # The name needs to be the same as the one that's appended to the form data in the front end 
     file = request.files["image"]
-    if file.filename != "":
+    if file.filename != "": # Check if the filename in the request is not empty, if it's not empty there should be an actual image in the request
         print(":DDD", file)
-        file.save(uploaded_path)
+        file.save(uploaded_path) # Save the file to the data folder so it can be easily accessed later
         print("Processing image started")
+        # Checkpoint for the model. Download from here: (https://github.com/facebookresearch/segment-anything#model-checkpoints) and place it in the same folder as this script
         checkpoint = "sam_vit_h_4b8939.pth"
-        model_type = "vit_h"
-        sam = sam_model_registry[model_type](checkpoint=checkpoint)
-        image = cv2.imread(uploaded_path)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        sam.to(device='cuda')
-        predictor = SamPredictor(sam)
-        predictor.set_image(image)
-        image_embedding = predictor.get_image_embedding().cpu().numpy()
-        np.save("../my-app/src/assets/data/processed.npy", image_embedding)
+        model_type = "vit_h" # Type of the model. Use the same type as the checkpoint
+        sam = sam_model_registry[model_type](checkpoint=checkpoint) # Initialize the model
+        image = cv2.imread(uploaded_path) # Save the image to a variable
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # Change the colours of the image to a specific type
+        sam.to(device='cuda') # Define the device SAM should use
+        predictor = SamPredictor(sam) # Create predictor, this is what creates the mask
+        predictor.set_image(image) # Give the predictor the image for masking
+        image_embedding = predictor.get_image_embedding().cpu().numpy() # Create the image embedding which is an npy file
+        np.save("../my-app/src/assets/data/processed.npy", image_embedding) # Save the npy file to the data folder
         print("Processing image ended")
         return {"testing": ["Mask1", "Mask2"]}
     
@@ -101,7 +99,7 @@ def askBard():
     json_data = ""
     imagebytes = formdata.read()
     image = Image.open(io.BytesIO(imagebytes))
-    image.save(mask_path)
+    image.save("../my-app/src/assets/data/mask.png")
     image_base64 = base64.b64encode(imagebytes)
     image_base64_string = image_base64.decode('utf-8')
     print(type(image_base64_string))

@@ -8,8 +8,7 @@ from PIL import Image as im
 
 
 if __name__ == "__main__":
-    # number of passed arguments.
-    n = len(sys.argv)
+    n = len(sys.argv) # number of passed arguments.
     print(f"Passed arguments amount: {n}")
     
     # Check if there are 3 arguments passed (filename, x and y).
@@ -22,7 +21,7 @@ if __name__ == "__main__":
         xarg = ""
         yarg = ""
 
-    # Save an image to a variable (currently uses a specific image for testing).
+    # Save an image to a variable.
     image = cv2.imread('../my-app/src/assets/data/temp.png')
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     saved_mask_path = "../my-app/src/assets/data/mask.png"
@@ -30,28 +29,31 @@ if __name__ == "__main__":
     # Function for initializing the SAM model and getting a mask using x and y coordinates as input points.
     def get_mask(x = 2739.5833333333335, y = 1875):
         sys.path.append("")
-        sam_checkpoint = "sam_vit_h_4b8939.pth"
-        model_type = "vit_h"
+        sam_checkpoint = "sam_vit_h_4b8939.pth" # checkpoint for the model. Download from here: (https://github.com/facebookresearch/segment-anything#model-checkpoints) and place it in the same folder as this script
+        model_type = "vit_h" # Type of the model. Use the same type as the checkpoint
         device = "cuda"
-        sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
-        sam.to(device=device)
-        predictor = SamPredictor(sam)
-        predictor.set_image(image)
-        input_point = np.array([[x, y]])
+        sam = sam_model_registry[model_type](checkpoint=sam_checkpoint) # Initialize the model
+        sam.to(device=device) # Define the device SAM should use
+        predictor = SamPredictor(sam) # Create predictor, this is what creates the mask
+        predictor.set_image(image) # Give the predictor the image for masking
+        input_point = np.array([[x, y]]) # Point where the user clicks on the image
         input_label = np.array([1])
+
+        # Start the prediction process with the given values and return multiple maks
         masks, scores, logits = predictor.predict(
             point_coords=input_point,
             point_labels=input_label,
             multimask_output=True,
         )
+
         generated_mask = masks[0]
         max_score = 0
-        # Go through all the masks and their scores and select the mask that has the highest score (higher score = more accurate mask)
-        for i, (mask, score) in enumerate(zip(masks, scores)):
+        # Create an array from the masks and scores of the mask, loop through them and select the mask that has the highest score (higher score = more accurate mask)
+        for i, (mask, score) in enumerate(zip(masks, scores)): 
             if score > max_score:
                 max_score = score
                 generated_mask = masks[i]
-        #print(generated_mask)
+
         # Mask is saved in COCO RLE format. More info here: (https://github.com/facebookresearch/segment-anything#dataset).
         # All the False values in the mask are converted to white pixels, so only the masked part of the image remains with a white background.
         image[generated_mask==False] = [255,255,255]
@@ -74,8 +76,9 @@ if __name__ == "__main__":
 
         img.putdata(newData)
         
-        # Change the size of the image to a smaller one. 
+        # Save the mask to the given location
         img.save(saved_mask_path, "PNG")
+        # Return value doesn't but is required for subprocess.check_output to function properly
         return ":D"
 
     # Check if the parameters were given properly, if so use the given parameters for the get_mask function.
