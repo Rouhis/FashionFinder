@@ -18,7 +18,8 @@ from io import BytesIO
 
 mask_path = "../my-app/src/assets/data/mask.png"
 if os.path.exists(mask_path):
-   os.remove(mask_path)
+    #os.remove(mask_path)
+    print("lol")
 else:
     print("There isn't a mask to delete")
 
@@ -92,7 +93,7 @@ def askBard():
 
 @app.route("/askgbt", methods=["POST"])
 def askBard():
-    api_key = "api-key uwu"
+    api_key = "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"
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
     formdata = request.files["image"]
@@ -148,18 +149,20 @@ def askBard():
                 json_data = json.loads(json_str)
                 print("Extracted JSON:", json_data)
             except json.JSONDecodeError:
-                print("Extracted string is not a valid JSON")
+                print(":DDDDDddddDDDDD")
+                return ({"error": "Extracted string is not a valid JSON"}), 500
         else:
-            print("No JSON found in the text")
+            print(":DDDDDddddDDDDDDDDDDDDDD")
+            return ({"error": "No JSON found in the text"})
     # Try to convert 'content' JSON string to dictionary
         try:
-            print(json_data)
+            print("dddddddd" + json_data)
             products = json_data['products']
         except json.JSONDecodeError:
             print(":DDDD")
             return jsonify({"error": "Invalid content format"}), 500
         except KeyError:
-            (":DDDDD")
+            print(":DDDDDDDD")
             return jsonify({"error": "Key 'products' not found in the content data"}), 404
 
         if products:
@@ -171,7 +174,7 @@ def askBard():
         print(":D")
         return jsonify({"error": "Invalid JSON format in response"}), 500
     except KeyError:
-        print(":DDDD")
+        print(":DDDDdDdD")
         return jsonify({"error": "Key error in parsing response"}), 404
     
 if __name__ == "__main__":

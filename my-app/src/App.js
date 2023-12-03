@@ -26,11 +26,13 @@ import loading from "./assets/data/loading.json"
 import pigeon from "./assets/data/pigeon.json"
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
+import Popup from "./popup";
 import AppContextProvider from "./components/hooks/context";
 const ort = require("onnxruntime-web");
 
 /* @ts-ignore */
 import npyjs from "npyjs";
+import { Button } from "@mui/material";
 // Define image, embedding and model paths
 const IMAGE_PATH = "/assets/data/naulakko.jpg"
 const IMAGE_EMBEDDING = "/assets/data/processed.npy"
@@ -129,7 +131,7 @@ const App = () => {
     formData.append("image", image); // Append the image to the FormData object
     formData.append(
       "question",
-      "Find me products similiar to this from any place and return answer in json format {products: [{id: number start from 0 ,name: product name without color and sex,brand:brand name no sex included ,price:price, specialName: product name with + symbol in every space no sex included, sex: (product sex men or women with lower case)etc.]} dont add anything after json"
+      "hellow gbt"
     );
 
     try {
@@ -142,9 +144,10 @@ const App = () => {
           },
         }
       );
-      console.log(":DD"+ response)
-      console.log(response.data)
+      console.log(":DD" + response.data)
+      console.log(cleanedAnswer + ":DDADD")
       setcleanedAnswer(response.data);
+      console.log(cleanedAnswer + " djoiadioawdiadipadipdhipdhipadhipwadhipadwhiapdwhiapdwhiwadh")
     } catch (error) {
       console.error("Error fetching response from Gbt:", error);
     }
@@ -299,12 +302,17 @@ const App = () => {
             <h5 className="BoxTitle">Similar Products</h5>
           </div>
           <Box className="InfoBox">
+            {
+            cleanedAnswer.error ? <p>plis click button again</p> :
             <ListForProducts
               mediaArray={cleanedAnswer}
               material={material}
               color={color}
             />
+}
           </Box>
+          <button onClick={()=>{console.log(cleanedAnswer.error + " djoiadioawdiadipadipdhipdhipadhipwadhipadwhiapdwhiapdwhiwadh")}}>lol</button>
+          <button onClick={()=>{Popup}}>popup</button>
           <div className="ConfirmButtonBox">
             <button
               className="ConfirmButton"
