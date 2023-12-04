@@ -15,11 +15,12 @@ import { Box } from "@mui/system";
 import Slider from "@mui/material/Slider";
 import ListForProducts from "./List";
 import { InferenceSession } from "onnxruntime-web";
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import Lottie from "lottie-react";
+import React, { useContext, useEffect, useState, useCallback, useRef } from "react";
+import Lottie, {useLottieInteractivity} from "lottie-react";
 import loading from "./assets/data/loading.json";
 import pigeon from "./assets/data/pigeon.json";
 import upload from "./assets/data/upload.json";
+import error from "./assets/data/error.json"
 //import {loading, pigeon, upload} from "./assets/data/";
 import axios from "axios";
 import { SelectBoxMaterial, SelectBoxColor } from "./SelectBox";
@@ -33,6 +34,7 @@ const IMAGE_EMBEDDING = "/assets/data/processed.npy";
 const MODEL_DIR = "./assets/sam_onnx_quantized_example.onnx";
 
 const App = () => {
+  const uploadRef = useRef()
   // Create state variables that aren't used through the app context
   const [cleanedAnswer, setcleanedAnswer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +43,9 @@ const App = () => {
   const [imageLoaded, setImageLoaded] = useState(null);
   const [maskLoaded, setMaskLoaded] = useState(false);
   const [data, setData] = useState("");
-  const [lottieState, setLottieState] = useState(false);
+  const [uploadLottieState, setUploadLottieState] = useState(false);
+  const [errorLottieState, setErrorLottieState] = useState(false);
+  const [loadingLottieState, setLoadingLottieState] = useState(false);
 
   //Set Price State value
   const handleSliderChange = (event, newPrice) => {
@@ -49,7 +53,9 @@ const App = () => {
   };
 
   const handleImageChange = async (event) => {
-    setLottieState(true); // Show a loading lottie when user selects a file to upload
+    setImageLoaded(false)
+    uploadRef.current.play()
+    setUploadLottieState(true); // Start playing the upload lottie
     setIsLoading(true);
     const imgFormData = new FormData(); // Creates new formdata element
     const file = event.target.files[0];
@@ -79,7 +85,7 @@ const App = () => {
     setIsLoading(false);
     setSelectedImage(file);
     loadImage(imageUrl); // Call loadImage with the new image URL
-    setLottieState(false); // Hides the loading lottie when the image is showing on the screen
+    setUploadLottieState(false); // Hides the loading lottie when the image is showing on the screen
   };
 
   const loadImage = async (url) => {
@@ -109,6 +115,7 @@ const App = () => {
   }, [cleanedAnswer, ".assets/data/mask.png"]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {
+    setLoadingLottieState(true)
     setIsLoading(true);
     let image = selectedImage;
 
@@ -144,6 +151,7 @@ const App = () => {
       console.error("Error fetching response from Gbt:", error);
     }
     setIsLoading(false);
+    setLoadingLottieState(false)
   };
 
   // Create state variables used through the app context
@@ -238,6 +246,12 @@ const App = () => {
     document.getElementById("PriceRange").value = "76";
   }
 
+  useEffect(()=>{
+    if (uploadRef.current) {
+      uploadRef.current.goToAndStop(1000)// Got to frame 1000 and stop
+    }
+  }, [])
+
   return (
     <div className="App">
       <div className="TitleHeader">
@@ -249,15 +263,16 @@ const App = () => {
           <div className="HeaderBox">
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="LoadImageBox">
+          <Box className="LoadImageBox" style={{height: 581}}>
             {/** 
              * Show lottie when the lottieState is true (when use uploads an image and is waiting for it to show on the screen) 
              * Show the uploaded image that lets the user hover over it and preview masks. (Tool custom component has the mask preview functionality which is inside the stage component)
              * Show a lottie when there's no uploaded image displayed.
             */}
-            {lottieState && <Lottie animationData={loading} loop={true} />}
             {imageLoaded && <Stage />}
-            {!imageLoaded && <Lottie animationData={upload} loop={true}/>}
+            {!imageLoaded && <Lottie lottieRef={uploadRef} animationData={upload} style={{width: 300}} loop={false} onComplete={() => {
+              uploadRef.current.goToAndStop(3000)
+            }}/>}
             <input
               type="file"
               onChange={handleImageChange}
@@ -310,6 +325,7 @@ const App = () => {
             <h5 className="BoxTitle">Similar Products</h5>
           </div>
           <Box className="InfoBox">
+            {loadingLottieState && <Lottie animationData={loading} style={{width: 300}} loop={true}/>}
             <ListForProducts
               mediaArray={cleanedAnswer}
               material={material}

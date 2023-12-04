@@ -12,7 +12,7 @@ import AppContext from "./hooks/createContext";
 
 /**
  * Custom component for getting the user's cursor's placement as x and y coordinates
- * @returns {Stage} returns a custom component.
+ * @returns returns a custom component.
  */
 const Stage = () => {
   const {

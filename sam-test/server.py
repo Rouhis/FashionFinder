@@ -134,12 +134,15 @@ def askBard():
     try:
     # Since response.json is a method, you need to call it to get the JSON response
         data = response.json()
-        print(data)
+        print("dataxd", data)
     # Extracting the 'content' from the 'message'
+        print(data['choices'][0]['message'])
         content_str = data['choices'][0]['message']['content']
+        print("xdd", type(content_str))
         #content_str = content_str.replace("```json\n", "").replace("\n'''", "").strip()
         #content_str = content_str.replace("```", "")
         match = re.search(pattern, content_str, re.DOTALL)
+        print("xddd", match.group())
         if match:
             json_str = match.group()
             try:
@@ -151,8 +154,9 @@ def askBard():
             print("No JSON found in the text")
     # Try to convert 'content' JSON string to dictionary
         try:
-            print(json_data)
+            print("testing", json_data)
             products = json_data['products']
+            print("products", products)
         except json.JSONDecodeError:
             print(":DDDD")
             return jsonify({"error": "Invalid content format"}), 500
