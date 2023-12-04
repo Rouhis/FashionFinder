@@ -136,15 +136,28 @@ def askBard():
         data = response.json()
         print("dataxd", data)
     # Extracting the 'content' from the 'message'
-        print(data['choices'][0]['message'])
+        #print("test", data['choices'][0]['message'])
         content_str = data['choices'][0]['message']['content']
         print("xdd", type(content_str))
+        print(":D", content_str)
         #content_str = content_str.replace("```json\n", "").replace("\n'''", "").strip()
         #content_str = content_str.replace("```", "")
         match = re.search(pattern, content_str, re.DOTALL)
-        print("xddd", match.group())
+        #print("xddd", match.group())
         if match:
-            json_str = match.group()
+            match_group = match.group()
+            if match_group.endswith(","):
+                print("endswithtest")
+                match_group = match_group + "]}"
+
+            print("match group", match_group)
+            if not match_group.endswith("]}"):
+                print("endswithtestbrackets")
+                match_group = match_group + "]}"
+                print("endswithtestbrakcetsvalue", match_group)
+
+            print("math_group_parsed:", match_group)
+            json_str = match_group
             try:
                 json_data = json.loads(json_str)
                 print("Extracted JSON:", json_data)

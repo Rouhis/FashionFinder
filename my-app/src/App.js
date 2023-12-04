@@ -267,13 +267,13 @@ const App = () => {
           <div className="HeaderBox">
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="LoadImageBox" style={{ height: 581 }}>
+          <Box className="ToBeMaskedImg" style={{ height: 581 }}>
             {/** 
              * Show lottie when the lottieState is true (when use uploads an image and is waiting for it to show on the screen) 
              * Show the uploaded image that lets the user hover over it and preview masks. (Tool custom component has the mask preview functionality which is inside the stage component)
              * Show a lottie when there's no uploaded image displayed.
             */}
-            {imageLoaded && <Stage />}
+            {imageLoaded && <div><Stage /></div>}
             {!imageLoaded && <Lottie lottieRef={uploadRef} animationData={upload} style={{ width: 300 }} loop={false} onComplete={() => {
               uploadRef.current.goToAndStop(3000)
             }} />}
