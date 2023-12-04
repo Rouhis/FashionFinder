@@ -16,7 +16,7 @@ import Slider from "@mui/material/Slider";
 import ListForProducts from "./List";
 import { InferenceSession } from "onnxruntime-web";
 import React, { useContext, useEffect, useState, useCallback, useRef } from "react";
-import Lottie, {useLottieInteractivity} from "lottie-react";
+import Lottie, { useLottieInteractivity } from "lottie-react";
 import loading from "./assets/data/loading.json";
 import pigeon from "./assets/data/pigeon.json";
 import upload from "./assets/data/upload.json";
@@ -44,8 +44,8 @@ const App = () => {
   const [maskLoaded, setMaskLoaded] = useState(false);
   const [data, setData] = useState("");
   const [uploadLottieState, setUploadLottieState] = useState(false);
-  const [errorLottieState, setErrorLottieState] = useState(false);
   const [loadingLottieState, setLoadingLottieState] = useState(false);
+  const [isApiKey, setIsApiKey] = useState(true)
 
   //Set Price State value
   const handleSliderChange = (event, newPrice) => {
@@ -116,6 +116,7 @@ const App = () => {
 
   const handleAskBard = async () => {
     setLoadingLottieState(true)
+    setIsApiKey(true)
     setIsLoading(true);
     let image = selectedImage;
 
@@ -145,10 +146,13 @@ const App = () => {
         }
       );
       console.log(":DD" + response);
-      console.log(response.data);
+      console.log(":DD" + response.data)
+      console.log(cleanedAnswer + ":DDADD")
       setcleanedAnswer(response.data);
+      console.log(cleanedAnswer + " djoiadioawdiadipadipdhipdhipadhipwadhipadwhiapdwhiapdwhiwadh")
     } catch (error) {
       console.error("Error fetching response from Gbt:", error);
+      setIsApiKey(false)
     }
     setIsLoading(false);
     setLoadingLottieState(false)
@@ -246,7 +250,7 @@ const App = () => {
     document.getElementById("PriceRange").value = "76";
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (uploadRef.current) {
       uploadRef.current.goToAndStop(1000)// Got to frame 1000 and stop
     }
@@ -255,24 +259,24 @@ const App = () => {
   return (
     <div className="App">
       <div className="TitleHeader">
-        <img src="./assets/data/logo192.png" style={{width: 100}}></img>
-      <h1 className="title">Fashion Finder</h1>
+        <img src="./assets/data/logo192.png" style={{ width: 100 }}></img>
+        <h1 className="title">Fashion Finder</h1>
       </div>
       <div className="Boxes">
         <div className="Left">
           <div className="HeaderBox">
             <h5 className="BoxTitle">Upload image of the desired clothing</h5>
           </div>
-          <Box className="LoadImageBox" style={{height: 581}}>
+          <Box className="LoadImageBox" style={{ height: 581 }}>
             {/** 
              * Show lottie when the lottieState is true (when use uploads an image and is waiting for it to show on the screen) 
              * Show the uploaded image that lets the user hover over it and preview masks. (Tool custom component has the mask preview functionality which is inside the stage component)
              * Show a lottie when there's no uploaded image displayed.
             */}
             {imageLoaded && <Stage />}
-            {!imageLoaded && <Lottie lottieRef={uploadRef} animationData={upload} style={{width: 300}} loop={false} onComplete={() => {
+            {!imageLoaded && <Lottie lottieRef={uploadRef} animationData={upload} style={{ width: 300 }} loop={false} onComplete={() => {
               uploadRef.current.goToAndStop(3000)
-            }}/>}
+            }} />}
             <input
               type="file"
               onChange={handleImageChange}
@@ -324,13 +328,20 @@ const App = () => {
           <div className="HeaderBox">
             <h5 className="BoxTitle">Similar Products</h5>
           </div>
-          <Box className="InfoBox">
-            {loadingLottieState && <Lottie animationData={loading} style={{width: 300}} loop={true}/>}
-            <ListForProducts
-              mediaArray={cleanedAnswer}
-              material={material}
-              color={color}
-            />
+          <Box className="SimilarProducts">
+            {loadingLottieState && <Lottie animationData={loading} style={{ width: 300 }} loop={true} />}
+            {
+              cleanedAnswer.error || !isApiKey ?
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <Lottie animationData={error} style={{ width: 300 }} loop={true} />
+                  <p style={{ textAlign: "center", padding: "10%" }}>Please try again and check that you are using the correct API key</p>
+                </div> :
+                <ListForProducts
+                  mediaArray={cleanedAnswer}
+                  material={material}
+                  color={color}
+                />
+            }
           </Box>
           <div className="ConfirmButtonBox">
             <button

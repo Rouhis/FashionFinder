@@ -74,6 +74,17 @@
   overflow-y: auto;
 }
 
+.SimilarProducts  {
+  width: 457px;
+  height: 581px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--box-background); /* Box background */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .LoadImageBox{
   display: flex;
   justify-content: center;

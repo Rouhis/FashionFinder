@@ -90,7 +90,7 @@ def askBard():
 
 @app.route("/askgbt", methods=["POST"])
 def askBard():
-    api_key = "api-key uwu"
+    api_key = "lmao no api key :d"
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
     formdata = request.files["image"]
@@ -149,9 +149,11 @@ def askBard():
                 json_data = json.loads(json_str)
                 print("Extracted JSON:", json_data)
             except json.JSONDecodeError:
-                print("Extracted string is not a valid JSON")
+                print(":DDDDDddddDDDDD")
+                return ({"error": "Extracted string is not a valid JSON"}), 500
         else:
-            print("No JSON found in the text")
+            print(":DDDDDddddDDDDDDDDDDDDDD")
+            return ({"error": "No JSON found in the text"})
     # Try to convert 'content' JSON string to dictionary
         try:
             print("testing", json_data)
@@ -161,7 +163,7 @@ def askBard():
             print(":DDDD")
             return jsonify({"error": "Invalid content format"}), 500
         except KeyError:
-            (":DDDDD")
+            print(":DDDDDDDD")
             return jsonify({"error": "Key 'products' not found in the content data"}), 404
 
         if products:
@@ -173,7 +175,7 @@ def askBard():
         print(":D")
         return jsonify({"error": "Invalid JSON format in response"}), 500
     except KeyError:
-        print(":DDDD")
+        print(":DDDDdDdD")
         return jsonify({"error": "Key error in parsing response"}), 404
     
 if __name__ == "__main__":
