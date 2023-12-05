@@ -143,21 +143,23 @@ def askBard():
         #content_str = content_str.replace("```json\n", "").replace("\n'''", "").strip()
         #content_str = content_str.replace("```", "")
         match = re.search(pattern, content_str, re.DOTALL)
-        #print("xddd", match.group())
         if match:
             match_group = match.group()
-            if match_group.endswith(","):
+            clean_json_string = match_group.replace(" ", "").replace("\n", "")
+            print("xddd", clean_json_string)
+            if clean_json_string.endswith(","):
                 print("endswithtest")
-                match_group = match_group + "]}"
+                clean_json_string = clean_json_string + "]}"
 
-            print("match group", match_group)
-            if not match_group.endswith("]}"):
+            print("match group", clean_json_string)
+            if not clean_json_string.endswith("]}"):
                 print("endswithtestbrackets")
-                match_group = match_group + "]}"
-                print("endswithtestbrakcetsvalue", match_group)
+                clean_json_string = clean_json_string + "]}"
+                print("endswithtestbrakcetsvalue", clean_json_string)
 
-            print("math_group_parsed:", match_group)
-            json_str = match_group
+            print("math_group_parsed:", clean_json_string)
+            json_str = clean_json_string
+            jsonify(json_str)
             try:
                 json_data = json.loads(json_str)
                 print("Extracted JSON:", json_data)

@@ -46,6 +46,7 @@ const App = () => {
   const [uploadLottieState, setUploadLottieState] = useState(false);
   const [loadingLottieState, setLoadingLottieState] = useState(false);
   const [isApiKey, setIsApiKey] = useState(true)
+  const [errorLottieState, setErrorLottieState] = useState(false);
 
   //Set Price State value
   const handleSliderChange = (event, newPrice) => {
@@ -115,6 +116,7 @@ const App = () => {
   }, [cleanedAnswer, ".assets/data/mask.png"]); // The second parameter is an array of dependencies, in this case, only cleanedAnswer
 
   const handleAskBard = async () => {
+    setErrorLottieState(true)
     setLoadingLottieState(true)
     setIsApiKey(true)
     setIsLoading(true);
@@ -156,6 +158,7 @@ const App = () => {
     }
     setIsLoading(false);
     setLoadingLottieState(false)
+    setErrorLottieState(false)
   };
 
   // Create state variables used through the app context
@@ -329,7 +332,7 @@ const App = () => {
             <h5 className="BoxTitle">Similar Products</h5>
           </div>
           <Box className="SimilarProducts">
-            {loadingLottieState && <Lottie animationData={loading} style={{ width: 300 }} loop={true} />}
+            {loadingLottieState && <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}><Lottie animationData={loading} style={{ width: 300 }} loop={true} /></div>}
             {
               cleanedAnswer.error || !isApiKey ?
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>

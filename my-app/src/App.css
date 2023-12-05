@@ -15,6 +15,7 @@
 
   .InfoBox, .LoadImageBox {
     width: 100%;
+    height: auto;
   }
 
   .InfoText {
@@ -73,16 +74,22 @@
   overflow-y: auto;
 }
 
-.SimilarProducts  {
+.SimilarProducts {
   width: 457px;
   height: 581px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   background-color: var(--box-background); /* Box background */
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.css-176g7h9-JoyCard-root {
+  background-color: #9534;
+
+}
+
 
 .LoadImageBox{
   display: flex;
