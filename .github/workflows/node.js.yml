@@ -20,7 +20,7 @@ jobs:
 
     - name: Monitor webpack serve output
       run: |
-        while true; do
+        while [[ $? -ne 0 ]]; do
           npm run start-dev 2>&1 | tail -n 1
           if [[ $? -eq 0 ]]; then
             echo "Webpack compiled successfully"
