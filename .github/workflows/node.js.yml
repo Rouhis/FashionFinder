@@ -18,8 +18,16 @@ jobs:
     - name: Install dependencies and run the app
       run: yarn
 
-    - name: Build the app
-      run: yarn build
+    - name: Monitor webpack serve output
+      run: |
+        while true; do
+          npm run start-dev 2>&1 | tail -n 1
+          if [[ $? -eq 0 ]]; then
+            echo "Webpack compiled successfully"
+            break
+          fi
+          sleep 1
+        done
 
     - name: Sleep for 5 seconds
       run: sleep 5

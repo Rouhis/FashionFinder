@@ -145,12 +145,21 @@ def askBard():
         match = re.search(pattern, content_str, re.DOTALL)
         if match:
             match_group = match.group()
-            clean_json_string = match_group.replace(" ", "").replace("\n", "")
+            clean_json_string = match_group.replace(" ", "").replace("\n", "") # Remove all whitespaces and linebreaks to handle the text easier
             print("xddd", clean_json_string)
+            # Check if the given result isn't in proper json format, if it isn't add the missing brackets
+            # match.group() should never end in "," and instead always end in "}" but content_str has ended in "," before so this is here just incase
             if clean_json_string.endswith(","):
                 print("endswithtest")
                 clean_json_string = clean_json_string + "]}"
 
+
+            # There is a problem where sometimes the value of content_str json ends before the last item's closing bracket } 
+            # and the last 2 ]} brackets are missing too, but based on testing,
+            # match.group() always ends on }, so it'll remove the incompleted product and show only up to the last completed product in the json.
+            # So match.group()'s value should always be either a proper json, or incompleted json that's missing the last closing brackets.
+            # With this code we can check if the json is incomplete, and if it is, add the missing brackets to the end of the incompleted json.
+            # Since we remove the whitespaces and line breaks from the json, we can just add the missing brackets to the variable
             print("match group", clean_json_string)
             if not clean_json_string.endswith("]}"):
                 print("endswithtestbrackets")

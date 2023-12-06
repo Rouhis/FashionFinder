@@ -333,6 +333,10 @@ const App = () => {
           </div>
           <Box className="SimilarProducts">
             {loadingLottieState && <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}><Lottie animationData={loading} style={{ width: 300 }} loop={true} /></div>}
+            {/* Check if the backend returned a json with an error 
+              * or if user doesn't have the correct API key and the server returns and error
+              * If either is true show a lottie with text on the rightmost box, and if neither was true, return products on the box
+              */}
             {
               cleanedAnswer.error || !isApiKey ?
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
