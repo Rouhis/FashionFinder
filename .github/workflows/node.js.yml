@@ -17,3 +17,9 @@ jobs:
 
     - name: Install dependencies and run the app
       run: yarn && yarn start
+
+    - name: Sleep for 5 seconds
+      run: sleep 5
+
+    - name: Exit
+      run: exit 0
