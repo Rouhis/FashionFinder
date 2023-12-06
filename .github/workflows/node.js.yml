@@ -12,8 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: yarn
-
-    - name: Run the application
-      run: yarn build
+    - name: Install dependencies and run the app
+      run: |
+        cd ../../my-app
+        yarn && yarn start
