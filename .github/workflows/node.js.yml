@@ -18,19 +18,27 @@ jobs:
     - name: Install dependencies and run the app
       run: yarn
 
-    - name: Monitor webpack serve output
-      run: |
+      # Keep checking if the yarn start-dev command until webpack has compiled succesfully.
+      # If there are errors that prevent webpack from compiling succesfully, the code will exit the loop after 2 minutes,
+      # so the workflow should never get stuck and hang indefinitely.
+    - name: Run the app in dev mode
+      run: | 
         while [[ $? -ne 0 ]]; do
-          npm run start-dev 2>&1 | tail -n 1
+          yarn start-dev 2>&1 | tail -n 1
           if [[ $? -eq 0 ]]; then
             echo "Webpack compiled successfully"
             break
           fi
           sleep 1
+          timeout -s 120 yarn start-dev
+          if [[ $? -ne 0 ]]; then
+            echo "Timed out waiting for yarn start-dev to complete"
+            break
+          fi
         done
 
-    - name: Sleep for 5 seconds
-      run: sleep 5
+    - name: Run the app in prod mode
+      run: yarn build
 
     - name: Exit
       run: exit 0
