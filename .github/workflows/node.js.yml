@@ -16,10 +16,10 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install dependencies and run the app
-      run: yarn && yarn start
+      run: yarn
 
-    - name: Check for webpack success message
-      run: watch -n 1 'yarn start | grep -q "webpack 5.89.0 compiled successfully"'
+    - name: Build the app
+      run: yarn build
 
     - name: Sleep for 5 seconds
       run: sleep 5
