@@ -18,8 +18,8 @@ jobs:
     - name: Install dependencies and run the app
       run: yarn && yarn start
 
-    - name: Wait for yarn start to finish
-      run: watch -n 1 'yarn start' | grep -q 'exited 0'
+    - name: Check for webpack success message
+      run: watch -n 1 'yarn start | grep -q "webpack 5.89.0 compiled successfully"'
 
     - name: Sleep for 5 seconds
       run: sleep 5
