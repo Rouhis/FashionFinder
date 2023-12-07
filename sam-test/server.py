@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 from segment_anything import sam_model_registry, SamPredictor
 from PIL import Image
-from bardapi import Bard
+#from bardapi import Bard
 import io
 import queue
 import json
@@ -88,110 +88,111 @@ def askBard():
         return jsonify({"error": "Invalid response from Bard service"}), 500
 '''   
 
+# Define the Flask route for handling POST requests at "/askgbt"
 @app.route("/askgbt", methods=["POST"])
-def askBard():
-    api_key = "lmao no api key :d"
+def askGbt():
+    # OpenAI API key, replace "APIKEY HERE" with your actual API key
+    api_key = "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"
+
+    # Check if 'image' is present in the POST request
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
+
+    # Get the image file and question from the POST request
     formdata = request.files["image"]
     question = request.form["question"]
+
+    # Regular expression pattern for extracting JSON content from the OpenAI response
     pattern = r'\{.*\}'
-    json_data = ""
+
+    # Read the image bytes and save it to a file
     imagebytes = formdata.read()
     image = Image.open(io.BytesIO(imagebytes))
     image.save("../my-app/src/assets/data/mask.png")
+
+    # Convert the image to base64 format
     image_base64 = base64.b64encode(imagebytes)
     image_base64_string = image_base64.decode('utf-8')
+
+    # Print the type of the base64-encoded image string
     print(type(image_base64_string))
-    
+
+    # Set headers for the OpenAI API request
     headers = {
         "Content": "application/json",
         "Authorization": f"Bearer {api_key}"
     }
+
+    # Prepare payload for the OpenAI API request
     payload = {
-  "model": "gpt-4-vision-preview",
-  "messages": [
-    {
-      "role": "user",
-      "content": [
-        {
-          "type": "text",
-          "text": f"{question}"
-        },
-        {
-          "type": "image_url",
-          "image_url": {
-            "url": f"data:image/jpeg;base64,{image_base64_string}"
-          }
-        }
-      ]
+        "model": "gpt-4-vision-preview",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"{question}"
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{image_base64_string}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
     }
-  ],
-  "max_tokens": 300
-} 
+
+    # Make a POST request to the OpenAI API
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-    #response = 'Im sorry, but I cant assist with finding real-time data or current product listings from the internet. However, I can provide an example of how you might structure the JSON response with fictional or generic product data for similar items. Below is an example JSON structure:{  "products": [    {      "id": 0,      "name": "Leather Jacket",      "brand": "Classic Gear",      "price": 99.99,      "specialName": "Leather+Jacket",      "sex": "men"    },    {      "id": 1,      "name": "Motorcycle Jacket",      "brand": "RoadRider",      "price": 129.99,      "specialName": "Motorcycle+Jacket",      "sex": "men"    },    {      "id": 2,      "name": "Bomber Jacket",      "brand": "Aviator",      "price": 89.99,      "specialName": "Bomber+Jacket",      "sex": "men"    }  ]}Please remember that the above data is hypothetical and does not represent real products or actual prices.'
+
+    # Try to handle the OpenAI API response
     try:
-    # Since response.json is a method, you need to call it to get the JSON response
-        data = response.json()
-        print("dataxd", data)
-    # Extracting the 'content' from the 'message'
-        #print("test", data['choices'][0]['message'])
-        content_str = data['choices'][0]['message']['content']
-        print("xdd", type(content_str))
-        print(":D", content_str)
-        #content_str = content_str.replace("```json\n", "").replace("\n'''", "").strip()
-        #content_str = content_str.replace("```", "")
+        # Extract the 'content' from the 'message'
+        content_str = response.json()['choices'][0]['message']['content']
+
+        # Clean the extracted JSON string
         match = re.search(pattern, content_str, re.DOTALL)
         if match:
+            # Extracted JSON string
             match_group = match.group()
             clean_json_string = match_group.replace(" ", "").replace("\n", "")
-            print("xddd", clean_json_string)
-            if clean_json_string.endswith(","):
-                print("endswithtest")
-                clean_json_string = clean_json_string + "]}"
 
-            print("match group", clean_json_string)
+            # Ensure the JSON string ends with proper brackets
             if not clean_json_string.endswith("]}"):
-                print("endswithtestbrackets")
                 clean_json_string = clean_json_string + "]}"
-                print("endswithtestbrakcetsvalue", clean_json_string)
 
-            print("math_group_parsed:", clean_json_string)
-            json_str = clean_json_string
-            jsonify(json_str)
+            # Attempt to parse the cleaned JSON string
             try:
-                json_data = json.loads(json_str)
+                json_data = json.loads(clean_json_string)
                 print("Extracted JSON:", json_data)
             except json.JSONDecodeError:
-                print(":DDDDDddddDDDDD")
                 return ({"error": "Extracted string is not a valid JSON"}), 500
         else:
-            print(":DDDDDddddDDDDDDDDDDDDDD")
             return ({"error": "No JSON found in the text"})
-    # Try to convert 'content' JSON string to dictionary
+
+        # Try to extract 'products' from the parsed JSON data
         try:
-            print("testing", json_data)
             products = json_data['products']
             print("products", products)
         except json.JSONDecodeError:
-            print(":DDDD")
             return jsonify({"error": "Invalid content format"}), 500
         except KeyError:
-            print(":DDDDDDDD")
             return jsonify({"error": "Key 'products' not found in the content data"}), 404
 
+        # Check if 'products' exist and return the response
         if products:
             return jsonify(products)
         else:
-            print(":DDD")
             return jsonify({"error": "No products found"}), 404
     except json.JSONDecodeError:
-        print(":D")
         return jsonify({"error": "Invalid JSON format in response"}), 500
     except KeyError:
-        print(":DDDDdDdD")
         return jsonify({"error": "Key error in parsing response"}), 404
+
     
 if __name__ == "__main__":
     app.run(debug=True)
