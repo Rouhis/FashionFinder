@@ -2,26 +2,43 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "github-actions" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    defaults:
+      run:
+        working-directory: ./my-app
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: yarn
-    - run: yarn start`
+
+    - name: Install dependencies and run the app
+      run: yarn
+
+      # Keep checking if the yarn start-dev command until webpack has compiled succesfully.
+      # If there are errors that prevent webpack from compiling succesfully, the code will exit the loop after 2 minutes,
+      # so the workflow should never get stuck and hang indefinitely.
+    - name: Run the app in dev mode
+      run: | 
+        while [[ $? -ne 0 ]]; do
+          yarn start-dev 2>&1 | tail -n 1
+          if [[ $? -eq 0 ]]; then
+            echo "Webpack compiled successfully"
+            break
+          fi
+          sleep 1
+          timeout -s 120 yarn start-dev
+          if [[ $? -ne 0 ]]; then
+            echo "Timed out waiting for yarn start-dev to complete"
+            break
+          fi
+        done
+
+    - name: Run the app in prod mode
+      run: yarn build
+
+    - name: Exit
+      run: exit 0
