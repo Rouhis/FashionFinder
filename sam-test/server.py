@@ -92,7 +92,7 @@ def askBard():
 @app.route("/askgbt", methods=["POST"])
 def askGbt():
     # OpenAI API key, replace "APIKEY HERE" with your actual API key
-    api_key = "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"
+    api_key = "API KEY HERE"
 
     # Check if 'image' is present in the POST request
     if 'image' not in request.files:
