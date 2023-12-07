@@ -1,0 +1,5 @@
+Flask-Cors
+opencv-python
+torch
+torchvision
+watchdog

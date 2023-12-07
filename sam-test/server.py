@@ -20,7 +20,9 @@ from io import BytesIO
 app = Flask(__name__)
 CORS(app)
 
-
+@app.route("/test")
+def test():
+    return {"testing": ["test1", "test2"]}
 # Route for creating a mask when user clicks a mask preview on the image
 # Takes x_value and y_value as arguments and passes them to get_mask.py script. X and Y are the coordinates for where the user clicks
 @app.route("/mask/<x_value>/<y_value>")
@@ -208,5 +210,5 @@ def askGbt():
 
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8000)
 

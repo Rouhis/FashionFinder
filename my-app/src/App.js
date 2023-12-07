@@ -73,7 +73,7 @@ const App = () => {
      * @param {headers} headers When sending FormData, it's important to include the headers in the request
      */
     const backendres = await axios.post(
-      "http://localhost:5000/createnpy",
+      "http://127.0.0.1:8000/createnpy",
       imgFormData,
       {
         headers: {
@@ -139,7 +139,7 @@ const App = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/askgbt",
+        "http://localhost:8000/askgbt",
         formData,
         {
           headers: {
