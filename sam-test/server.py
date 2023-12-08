@@ -14,12 +14,33 @@ import json
 import requests
 import base64
 import re
+import argparse
 from io import BytesIO
 
 # Define app and use Cors with default arguments. Cors is now allowed for all domains on all routes
 app = Flask(__name__)
 CORS(app)
 
+def parse_augment():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--device', type=str, default="cuda:0")
+    parser.add_argument('--sam_model_type', type=str, default="vit_h")
+    parser.add_argument('--port', type=int, default=6080, help="only useful when running gradio applications")  
+    parser.add_argument('--debug', action="store_true")
+    parser.add_argument('--mask_save', default=False)
+    args = parser.parse_args()
+
+    if args.debug:
+        print(args)
+    return args 
+
+args = parse_augment()
+args.device = "cuda:0"
+
+
+@app.route("/test")
+def test():
+    return {"testing": ["test1", "test2"]}
 
 # Route for creating a mask when user clicks a mask preview on the image
 # Takes x_value and y_value as arguments and passes them to get_mask.py script. X and Y are the coordinates for where the user clicks
@@ -40,7 +61,8 @@ def mask(x_value=0, y_value=0):
 # This npy file is required for SAM to create the blue masks on top of the selected image, when the user hovers their cursor over the image
 @app.route("/createnpy", methods=["POST", "GET"])
 def process():
-    uploaded_path = "../my-app/src/assets/data/temp.png" # Define the path to where the npy file will be saved
+    print("XDD")
+    uploaded_path = "./temp.png" # Define the path to where the npy file will be saved
      # Get the image file from the request using the appended "image" name. 
      # The name needs to be the same as the one that's appended to the form data in the front end 
     file = request.files["image"]
@@ -52,13 +74,16 @@ def process():
         checkpoint = "sam_vit_h_4b8939.pth"
         model_type = "vit_h" # Type of the model. Use the same type as the checkpoint
         sam = sam_model_registry[model_type](checkpoint=checkpoint) # Initialize the model
+        print("samtest")
         image = cv2.imread(uploaded_path) # Save the image to a variable
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # Change the colours of the image to a specific type
+        print("cudatosam")
         sam.to(device='cuda') # Define the device SAM should use
+        print(":DD")
         predictor = SamPredictor(sam) # Create predictor, this is what creates the mask
         predictor.set_image(image) # Give the predictor the image for masking
         image_embedding = predictor.get_image_embedding().cpu().numpy() # Create the image embedding which is an npy file
-        np.save("../my-app/src/assets/data/processed.npy", image_embedding) # Save the npy file to the data folder
+        np.save("./processed.npy", image_embedding) # Save the npy file to the data folder
         print("Processing image ended")
         return {"testing": ["Mask1", "Mask2"]}
     
@@ -208,5 +233,5 @@ def askGbt():
 
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=8080)
 

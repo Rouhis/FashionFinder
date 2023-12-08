@@ -65,7 +65,7 @@ const Tool = ({ handleMouseMove }: ToolProps) => {
     const xcoord = click[0].x
     const ycoord = click[0].y
     try {
-      const fetched_value = await fetch(`http://localhost:5000/mask/${xcoord}/${ycoord}`)
+      const fetched_value = await fetch(`http://localhost:8080/mask/${xcoord}/${ycoord}`)
       const data = await fetched_value.json();
       console.log("fetched value", fetched_value)
       console.log("fetched value in json", data)

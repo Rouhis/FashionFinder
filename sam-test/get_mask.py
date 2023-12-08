@@ -22,9 +22,9 @@ if __name__ == "__main__":
         yarg = ""
 
     # Save an image to a variable.
-    image = cv2.imread('../my-app/src/assets/data/temp.png')
+    image = cv2.imread('./temp.png')
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    saved_mask_path = "../my-app/src/assets/data/mask.png"
+    saved_mask_path = "./mask.png"
 
     # Function for initializing the SAM model and getting a mask using x and y coordinates as input points.
     def get_mask(x = 2739.5833333333335, y = 1875):
