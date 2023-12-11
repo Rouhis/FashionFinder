@@ -1,8 +1,3 @@
-// Copyright (c) Meta Platforms, Inc. and affiliates.
-// All rights reserved.
-
-// This source code is licensed under the license found in the
-// LICENSE file in the root directory of this source tree.
 import "./App.css";
 import "./assets/scss/App.scss";
 import { handleImageScale } from "./components/helpers/scaleHelper";
@@ -354,6 +349,7 @@ const App = () => {
             <button
               className="ConfirmButton"
               variant="solid"
+              onClick={handleAskBard}
               disabled={isLoading || !selectedImage}
             >
               Make search again

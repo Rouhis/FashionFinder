@@ -22,9 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-sam-test/sam_vit_h_4b8939.pth
+server/sam_vit_h_4b8939.pth
 package-lock.json
 __pycache__
 my-app/src/assets/data/temp.png
 my-app/src/assets/data/processed.npy
 my-app/src/assets/data/mask.png
+my-app/src/assets/data/temp.png

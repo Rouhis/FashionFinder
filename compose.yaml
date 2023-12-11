@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: node-final
+    ports:
+      - "8080:8080"
+    networks:
+      - fashionfindernw
+    volumes:
+      - shared:/usr/src/app/my-app
+
+  python-app:
+    build:
+      context: .
+      target: python-deps
+      args:
+        PYTHON_VERSION: 3.11.5
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - fashionfindernw
+    volumes:
+      - shared:/usr/src/app/server
+
+networks:
+  fashionfindernw:
+    driver: bridge
+
+volumes:
+  shared:

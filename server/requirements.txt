@@ -1,0 +1,7 @@
+#SAM/server dependencies
+Flask-Cors
+opencv-python
+torch
+torchvision
+bardapi
+watchdog
