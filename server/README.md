@@ -29,6 +29,11 @@ Install pytorch with CUDA support, torchvision and torch audio
 ```
 conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
 ```
+Create a .env file to the server folder that looks like this
+```
+GBT4_API_KEY=YOUR_API_KEY
+```
+We can provide api key for testing if you don't have access to the GBT-4 metropolia group.
 
 Start the server
 
