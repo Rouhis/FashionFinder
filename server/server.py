@@ -14,7 +14,7 @@ import requests
 import base64
 import re
 from io import BytesIO
-
+from dotenv import load_dotenv
 # Define app and use Cors with default arguments. Cors is now allowed for all domains on all routes
 app = Flask(__name__)
 CORS(app)
@@ -90,9 +90,11 @@ def askBard():
 # Define the Flask route for handling POST requests at "/askgbt"
 @app.route("/askgbt", methods=["POST"])
 def askGbt():
-    # OpenAI API key, replace "APIKEY HERE" with your actual API key
-    api_key = "API KEY HERE"
+    load_dotenv()
 
+    # OpenAI API key, replace "APIKEY HERE" with your actual API key
+    api_key = os.getenv("GBT4_API_KEY")
+    
     # Check if 'image' is present in the POST request
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
@@ -147,7 +149,7 @@ def askGbt():
 
     # Make a POST request to the OpenAI API
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-
+    print(response)
     # Try to handle the OpenAI API response
     try:
         # Extract the 'content' from the 'message'
@@ -208,4 +210,3 @@ def askGbt():
     
 if __name__ == "__main__":
     app.run(debug=True)
-

@@ -29,3 +29,6 @@ my-app/src/assets/data/temp.png
 my-app/src/assets/data/processed.npy
 my-app/src/assets/data/mask.png
 my-app/src/assets/data/temp.png
+
+.env
+server/.env
